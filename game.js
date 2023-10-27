@@ -61,9 +61,8 @@ class GorillasGame {
     return { x: xPos, y: yPos };
   }
 
-  takeTurn(angle, power) {
+  async takeTurn(angle, power) {
     const g = 0.0981; // Gravity, reduced for the scale of our game
-    let hit = false;
     let xPos = this.gorillas[this.currentPlayer].x;
     let yPos = this.gorillas[this.currentPlayer].y;
 
@@ -72,22 +71,10 @@ class GorillasGame {
     xPos += 500 * cos(radianAngle); // You can adjust the offset value as needed
     yPos -= 500 * sin(radianAngle);
 
-    const trajectory = computeTrajectory(
-      this,
-      xPos,
-      yPos,
-      angle,
-      power,
-      this.wind,
-      g
-    );
-
-    for (let position of trajectory) {
-      if (this.checkCollision(position.x, position.y)) {
-        hit = true;
-        this.hitPosition = { x: position.x, y: position.y };
-        break;
-      }
+    // Use the drawBananaTrajectory function to get the hit status
+    const hit = await this.view.drawBananaTrajectory(xPos, yPos, angle, power);
+    if (hit) {
+      this.hitPosition = { x: xPos, y: yPos };
     }
 
     return hit;

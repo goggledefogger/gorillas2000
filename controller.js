@@ -31,14 +31,18 @@ class GorillasController {
     let startX = this.game.gorillas[this.game.currentPlayer].x;
     let startY = this.game.gorillas[this.game.currentPlayer].y;
 
-    // Draw the banana's trajectory
-    this.view.drawBananaTrajectory(startX, startY, angle, power);
-
-    let hit = await this.game.takeTurn(angle, power);
-    if (hit) {
-      this.game.switchPlayer();
+    const hitData = await this.view.drawBananaTrajectory(
+      startX,
+      startY,
+      angle,
+      power
+    );
+    if (hitData.hit) {
+      this.game.hitPosition = hitData.position; // Set the actual hit position
       this.view.showExplosion(this.game.hitPosition.x, this.game.hitPosition.y);
+      this.game.switchPlayer();
     }
+
     this.updateView();
   }
 

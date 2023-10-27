@@ -20,44 +20,48 @@ class GorillasView {
     // ... logic ...
   }
 
-  drawBananaTrajectory(startX, startY, angle, power) {
-    const g = 0.0981;
+  async drawBananaTrajectory(startX, startY, angle, power) {
+    return new Promise((resolve) => {
+      const g = 0.0981;
 
-    const trajectory = computeTrajectory(
-      this.game,
-      startX,
-      startY,
-      angle,
-      power,
-      this.game.wind,
-      g
-    );
+      const trajectory = computeTrajectory(
+        this.game,
+        startX,
+        startY,
+        angle,
+        power,
+        this.game.wind,
+        g
+      );
 
-    let trajectoryIndex = 0;
+      let trajectoryIndex = 0;
+      let hit = false;
 
-    const animateThrow = () => {
-      background(220); // Clear the canvas
-      this.drawCityscape();
-      this.drawGorillas();
+      const animateThrow = () => {
+        background(220); // Clear the canvas
+        this.drawCityscape();
+        this.drawGorillas();
 
-      if (trajectoryIndex < trajectory.length) {
-        const position = trajectory[trajectoryIndex];
-        ellipse(position.x, position.y, 5, 5); // Draw a small circle for the banana's position
+        if (trajectoryIndex < trajectory.length) {
+          const position = trajectory[trajectoryIndex];
+          ellipse(position.x, position.y, 5, 5); // Draw a small circle for the banana's position
 
-        // Check for collisions
-        const hit = this.game.checkCollision(position.x, position.y);
-        if (hit) {
-          this.showExplosion(position.x, position.y);
+          // Check for collisions
+          hit = this.game.checkCollision(position.x, position.y);
+          if (hit) {
+            this.showExplosion(position.x, position.y);
+            resolve({ hit: true, position }); // Return the position of the hit
+          } else {
+            trajectoryIndex++;
+            requestAnimationFrame(animateThrow);
+          }
         } else {
-          trajectoryIndex++; // Move to the next position in the trajectory
-          requestAnimationFrame(animateThrow); // Use requestAnimationFrame for smoother animation
+          resolve(false);
         }
-      }
-    };
+      };
 
-    animateThrow(); // Start the animation loop
-
-    animateThrow(); // Start the animation loop
+      animateThrow(); // Start the animation loop
+    });
   }
 
   animateBananaThrow(startX, startY, angle, power) {
