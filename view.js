@@ -4,6 +4,7 @@ class GorillasView {
   }
 
   drawCityscape() {
+    fill(COLORS.BUILDING);
     for (let i = 0; i < this.game.cityscape.length; i++) {
       let buildingHeight = this.game.cityscape[i];
       rect(i * 50, height - buildingHeight, 50, buildingHeight);
@@ -11,13 +12,16 @@ class GorillasView {
   }
 
   drawGorillas() {
+    fill(COLORS.GORILLA);
     for (let gorilla of this.game.gorillas) {
       ellipse(gorilla.x, gorilla.y, 40, 40);
     }
   }
 
   drawBanana(x, y) {
-    // ... logic ...
+    fill(COLORS.BANANA_FILL);
+    stroke(COLORS.BANANA_STROKE);
+    ellipse(x, y, 5, 5);
   }
 
   async drawBananaTrajectory(startX, startY, angle, power) {
@@ -44,7 +48,7 @@ class GorillasView {
 
         if (trajectoryIndex < trajectory.length) {
           const position = trajectory[trajectoryIndex];
-          ellipse(position.x, position.y, 5, 5); // Draw a small circle for the banana's position
+          this.drawBanana(position.x, position.y); // Draw the banana at the current position (x, y
 
           // Check for collisions
           hit = this.game.checkCollision(position.x, position.y);
