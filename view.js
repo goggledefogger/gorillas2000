@@ -100,6 +100,7 @@ class GorillasView {
   }
 
   render() {
+    background(220); // Clear the canvas first
     this.drawCityscape();
     this.drawGorillas();
 
