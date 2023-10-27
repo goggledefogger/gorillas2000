@@ -85,18 +85,19 @@ class GorillasGame {
 
     if (y > height - this.cityscape[buildingIndex]) {
       console.log('Collision with building:', buildingIndex);
-      return true;
+      return { type: 'building', index: buildingIndex };
     }
 
     for (let i = 0; i < this.gorillas.length; i++) {
-      if (i === this.currentPlayer) continue; // Skip checking collision with the current player's gorilla
+      // check if it's the current player gorilla and continue if so
+      if (i === this.currentPlayer) continue;
 
       const gorilla = this.gorillas[i];
       const distance = dist(x, y, gorilla.x, gorilla.y);
 
       if (distance < 20) {
         console.log('Collision with gorilla at:', gorilla.x, gorilla.y);
-        return true;
+        return { type: 'gorilla', player: i };
       }
     }
 

@@ -50,7 +50,7 @@ class GorillasView {
           hit = this.game.checkCollision(position.x, position.y);
           if (hit) {
             this.showExplosion(position.x, position.y);
-            resolve({ hit: true, position }); // Return the position of the hit
+            resolve({ hit, position }); // Return the position of the hit
           } else {
             trajectoryIndex++;
             requestAnimationFrame(animateThrow);

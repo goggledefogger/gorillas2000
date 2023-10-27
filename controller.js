@@ -31,18 +31,32 @@ class GorillasController {
     let startX = this.game.gorillas[this.game.currentPlayer].x;
     let startY = this.game.gorillas[this.game.currentPlayer].y;
 
-    const hitData = await this.view.drawBananaTrajectory(
+    // Await the resolution of drawBananaTrajectory
+    const collisionResult = await this.view.drawBananaTrajectory(
       startX,
       startY,
       angle,
       power
     );
-    if (hitData.hit) {
-      this.game.hitPosition = hitData.position; // Set the actual hit position
-      this.view.showExplosion(this.game.hitPosition.x, this.game.hitPosition.y);
-      this.game.switchPlayer();
-    }
 
+    if (collisionResult) {
+      switch (collisionResult.hit.type) {
+        case 'gorilla':
+          // Handle gorilla collision
+          alert(`Player ${this.game.currentPlayer + 1} wins this round!`);
+          this.game.switchPlayer();
+          break;
+        case 'building':
+          // Handle building collision
+          alert(`Hit a building at index ${collisionResult.hit.index}`);
+          this.game.switchPlayer();
+          break;
+        default:
+          // No collision
+          this.game.switchPlayer();
+          break;
+      }
+    }
     this.updateView();
   }
 
