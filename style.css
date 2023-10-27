@@ -1,0 +1,26 @@
+#game-content {
+  position: relative;
+  /* Make sure this container is relative so that the absolute positioning of win-message is in reference to it */
+  width: 800px;
+  height: 600px;
+  margin: 0 auto;
+}
+
+#win-message {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Semi-transparent background to overlay on the game content */
+  color: white;
+  font-size: 24px;
+  text-align: center;
+
+  /* Flexbox settings to center the content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

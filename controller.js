@@ -40,15 +40,20 @@ class GorillasController {
     );
 
     if (collisionResult) {
+      let winTextElement = document.getElementById('win-text');
       switch (collisionResult.hit.type) {
         case 'gorilla':
           // Handle gorilla collision
-          alert(`Player ${this.game.currentPlayer + 1} wins this round!`);
-          this.game.switchPlayer();
+          winTextElement.textContent = `Player ${
+            this.game.currentPlayer + 1
+          } wins this round!`;
+          this.updateScoreboard();
+          // Show the win message
+          document.getElementById('win-message').style.display = 'block';
           break;
         case 'building':
           // Handle building collision
-          alert(`Hit a building at index ${collisionResult.hit.index}`);
+          console.log(`Hit a building at index ${collisionResult.hit.index}`);
           this.game.switchPlayer();
           break;
         default:
@@ -63,6 +68,20 @@ class GorillasController {
   startGame() {
     this.game.initializeRound();
     this.updateView();
+
+    // Add event listener for the continue button to hide the message and start the next round
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      document.getElementById('win-message').style.display = 'none';
+      this.game.initializeRound();
+      this.updateView();
+    });
+  }
+
+  updateScoreboard() {
+    this.game.totalWins[this.game.currentPlayer]++;
+    document.getElementById(
+      `player${this.game.currentPlayer + 1}-score`
+    ).textContent = this.game.totalWins[this.game.currentPlayer];
   }
 
   updateView() {

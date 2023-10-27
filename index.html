@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gorillas Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -17,6 +18,18 @@
     <input type="range" id="power-slider" min="0" max="100" value="50">
 
     <button id="throw-button">Throw</button>
+
+    <!-- Scoreboard -->
+    <div id="scoreboard">
+      Player 1: <span id="player1-score">0</span> | Player 2: <span id="player2-score">0</span>
+    </div>
+
+    <!-- Win Message Section -->
+    <div id="win-message" style="display: none;">
+      <h2 id="win-text"></h2>
+      <button id="continue-btn">Continue</button>
+    </div>
+
   </div>
 
   <!-- Canvas for p5.js rendering -->
