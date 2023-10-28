@@ -9,31 +9,39 @@
 </head>
 
 <body>
-  <!-- UI elements for the game -->
-  <div id="controls">
-    <label for="angle-slider">Angle:</label>
-    <input type="range" id="angle-slider" min="0" max="90" value="45">
 
-    <label for="power-slider">Power:</label>
-    <input type="range" id="power-slider" min="0" max="100" value="50">
+  <div id="game-wrapper">
+    <!-- UI elements for the game -->
+    <div id="controls">
+      <label for="angle-slider">Angle:</label>
+      <input type="range" id="angle-slider" min="0" max="90" value="45">
 
-    <button id="throw-button">Throw</button>
+      <label for="power-slider">Power:</label>
+      <input type="range" id="power-slider" min="0" max="100" value="50">
 
-    <!-- Scoreboard -->
-    <div id="scoreboard">
-      Player 1: <span id="player1-score">0</span> | Player 2: <span id="player2-score">0</span>
+      <button id="throw-button">Throw</button>
+
+      <!-- Scoreboard -->
+      <div id="scoreboard">
+        Player 1: <span id="player1-score">0</span> | Player 2: <span id="player2-score">0</span>
+      </div>
+
+      <!-- Win Message Section -->
+      <div id="win-message" style="display: none;">
+        <h2 id="win-text"></h2>
+        <button id="continue-btn">Continue</button>
+      </div>
+
     </div>
-
-    <!-- Win Message Section -->
-    <div id="win-message" style="display: none;">
-      <h2 id="win-text"></h2>
-      <button id="continue-btn">Continue</button>
-    </div>
+    
+    <!-- Canvas for p5.js rendering -->
+    <div id="canvas-container"></div>
 
   </div>
 
-  <!-- Canvas for p5.js rendering -->
-  <div id="canvas-container"></div>
+
+
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
   <script src="constants.js"></script>

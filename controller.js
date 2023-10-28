@@ -90,8 +90,11 @@ class GorillasController {
 }
 
 function setup() {
-  createCanvas(800, 600).parent('canvas-container'); // Create a canvas of 800x600 pixels
-  noLoop(); // Ensure the draw function doesn't loop endlessly
+  const canvasContainer = document.getElementById('canvas-container');
+  let cnv = createCanvas(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
+  // remove cnv.center();
+  cnv.parent('canvas-container');
+  noLoop();
 
   game = new GorillasGame('Player 1', 'Player 2', 3);
   view = new GorillasView(game);
