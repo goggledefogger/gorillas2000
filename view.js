@@ -1,7 +1,9 @@
 let bananaImage;
 
 function preload() {
-  bananaImage = loadImage('/images/banana.png');
+  bananaImage = loadImage('/images/banana.png', (img) => {
+    img.resize(30, 0); // Resize to a width of 30 and auto-adjust height to maintain aspect ratio
+  });
 }
 class GorillasView {
   constructor(game) {
@@ -44,7 +46,6 @@ class GorillasView {
   async drawBananaTrajectory(startX, startY, angle, power) {
     return new Promise((resolve) => {
       const g = 0.0981;
-
       const trajectory = computeTrajectory(
         this.game,
         startX,
@@ -56,22 +57,30 @@ class GorillasView {
       );
 
       let trajectoryIndex = 0;
+      let rotationAngle = 0; // Initialize rotation angle
       let hit = false;
 
       const animateThrow = () => {
-        background(220); // Clear the canvas
+        background(220);
         this.drawCityscape();
         this.drawGorillas();
 
         if (trajectoryIndex < trajectory.length) {
           const position = trajectory[trajectoryIndex];
-          this.drawBanana(position.x, position.y); // Draw the banana at the current position (x, y
+
+          push(); // Save current drawing settings
+          translate(position.x, position.y); // Move the origin to the banana's current position
+          rotate(rotationAngle); // Rotate the drawing around the new origin
+          image(bananaImage, -bananaImage.width / 2, -bananaImage.height / 2); // Draw the banana centered around the new origin
+          pop(); // Restore drawing settings
+
+          rotationAngle += radians(10); // Increment the rotation angle
 
           // Check for collisions
           hit = this.game.checkCollision(position.x, position.y);
           if (hit) {
             this.showExplosion(position.x, position.y);
-            resolve({ hit, position }); // Return the position of the hit
+            resolve({ hit, position });
           } else {
             trajectoryIndex++;
             requestAnimationFrame(animateThrow);
@@ -81,7 +90,7 @@ class GorillasView {
         }
       };
 
-      animateThrow(); // Start the animation loop
+      animateThrow();
     });
   }
 
