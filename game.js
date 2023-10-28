@@ -17,21 +17,44 @@ class GorillasGame {
     this.wind = this.generateWind();
     this.currentPlayer = 0;
   }
-
   generateCityscape() {
     const buildings = [];
-    const numBuildings = width / 50; // Assuming each building is 50 pixels wide
+    const numBuildings = width / 50;
+    const MAX_HEIGHT_DIFFERENCE = 150;
 
     for (let i = 0; i < numBuildings; i++) {
-      buildings.push(random(100, 400)); // Random building height between 100 and 400 pixels
+      let buildingHeight = random(100, 400);
+
+      // Adjust height if the building is adjacent to a gorilla
+      for (let gorilla of this.gorillas) {
+        const gorillaBuildingIndex = floor(gorilla.x / 50);
+        if (Math.abs(gorillaBuildingIndex - i) <= 1) {
+          buildingHeight = random(100, 250);
+        }
+      }
+
+      // Limit height difference with the previous building
+      if (i > 0) {
+        let prevBuildingHeight = buildings[i - 1];
+        if (
+          Math.abs(buildingHeight - prevBuildingHeight) > MAX_HEIGHT_DIFFERENCE
+        ) {
+          // Adjust the building height to be within the allowed range
+          buildingHeight =
+            prevBuildingHeight +
+            random(-MAX_HEIGHT_DIFFERENCE, MAX_HEIGHT_DIFFERENCE);
+        }
+      }
+
+      buildings.push(buildingHeight);
     }
 
     return buildings;
   }
 
   positionGorillas() {
-    const gorilla1X = random(50, width / 2 - 50); // Place the first gorilla on the left half of the screen
-    const gorilla2X = random(width / 2 + 50, width - 50); // Place the second gorilla on the right half of the screen
+    const gorilla1X = random(0, width / 2 - 100);
+    const gorilla2X = random(width / 2 + 50, width - 50);
 
     const gorilla1Position = {
       x: gorilla1X,

@@ -1,3 +1,8 @@
+let bananaImage;
+
+function preload() {
+  bananaImage = loadImage('/images/banana.png');
+}
 class GorillasView {
   constructor(game) {
     this.game = game;
@@ -5,6 +10,7 @@ class GorillasView {
 
   drawCityscape() {
     fill(COLORS.BUILDING);
+    stroke(COLORS.BUILDING);
     for (let i = 0; i < this.game.cityscape.length; i++) {
       let buildingHeight = this.game.cityscape[i];
       rect(i * 50, height - buildingHeight, 50, buildingHeight);
@@ -12,16 +18,27 @@ class GorillasView {
   }
 
   drawGorillas() {
-    fill(COLORS.GORILLA);
-    for (let gorilla of this.game.gorillas) {
+    for (let i = 0; i < this.game.gorillas.length; i++) {
+      let gorilla = this.game.gorillas[i];
+      fill(i === 0 ? COLORS.GORILLA : COLORS.GORILLA_2);
       ellipse(gorilla.x, gorilla.y, 40, 40);
     }
   }
 
   drawBanana(x, y) {
-    fill(COLORS.BANANA_FILL);
-    stroke(COLORS.BANANA_STROKE);
-    ellipse(x, y, 5, 5);
+    // Adjust width based on your preference
+    let newWidth = 15; // Adjust this value based on your desired width
+
+    let aspectRatio = bananaImage.height / bananaImage.width;
+    let newHeight = aspectRatio * newWidth;
+
+    image(
+      bananaImage,
+      x - newWidth / 2,
+      y - newHeight / 2,
+      newWidth,
+      newHeight
+    );
   }
 
   async drawBananaTrajectory(startX, startY, angle, power) {
@@ -74,7 +91,7 @@ class GorillasView {
 
   drawPlannedTrajectory(startX, startY, angle, power) {
     const g = 0.0981;
-
+    let pulseIndex = 0;
     const trajectory = computeTrajectory(
       this.game,
       startX,
@@ -85,14 +102,20 @@ class GorillasView {
       g
     );
 
-    stroke(255, 0, 0); // Make the planned trajectory red
-    for (let i = 0; i < trajectory.length - 1; i++) {
-      line(
-        trajectory[i].x,
-        trajectory[i].y,
-        trajectory[i + 1].x,
-        trajectory[i + 1].y
-      );
+    stroke(COLORS.TRAJECTORY);
+    noFill();
+    beginShape();
+    for (let point of trajectory) {
+      vertex(point.x, point.y);
+    }
+    endShape();
+
+    // Animate the pulsating effect
+    if (trajectory.length) {
+      let pulsePoint = trajectory[pulseIndex];
+      fill(COLORS.TRAJECTORY);
+      ellipse(pulsePoint.x, pulsePoint.y, 5);
+      pulseIndex = (pulseIndex + PULSE_SPEED) % trajectory.length;
     }
   }
 
