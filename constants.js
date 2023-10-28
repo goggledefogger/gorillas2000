@@ -11,3 +11,6 @@ const COLORS = {
   BANANA_FILL: '#DAA520', // Dark Yellow (Goldenrod)
   BANANA_STROKE: '#000000', // Black
 };
+const IMAGE_WIDTHS = {
+  GORILLA: 60,
+}

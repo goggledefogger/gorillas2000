@@ -25,7 +25,7 @@ class GorillasView {
   drawGorillas() {
     for (let i = 0; i < this.game.gorillas.length; i++) {
       let gorilla = this.game.gorillas[i];
-      let imgWidth = 40; // Adjust as needed for your graphic's size
+      let imgWidth = IMAGE_WIDTHS.GORILLA;
       let imgHeight =
         (gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width) *
         imgWidth;
