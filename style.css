@@ -1,6 +1,50 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+  overflow: hidden;
+}
+
+#game-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  max-width: none; /* Allow it to expand */
+}
+
+#controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+#canvas-container {
+  width: 100%; 
+  padding-bottom: 56.25%; /* 4:3 aspect ratio */
+  position: relative;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 #game-content {
   position: relative;
-  /* Make sure this container is relative so that the absolute positioning of win-message is in reference to it */
   width: 800px;
   height: 600px;
   margin: 0 auto;
@@ -23,4 +67,47 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Tablet Portrait */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  #canvas-container {
+    width: 85%; /* Further reduce the width */
+    padding-bottom: 63.75%; /* Adjusted for a 3:4 aspect ratio */
+    margin: 0 auto 20px; /* Add vertical spacing between canvas and controls */
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+  #game-wrapper {
+    width: 100%;
+    padding: 0 10px; /* Add padding to the sides for some spacing */
+  }
+
+  #canvas-container {
+    width: 100%;
+    padding-bottom: 75%;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  #canvas-container {
+    width: 75vw;
+    padding-bottom: 56.25%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #game-wrapper {
+    flex-direction: row;
+    width: calc(75vw + 250px);
+  }
+
+  #controls {
+    width: auto;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 20px;
+  }
 }
