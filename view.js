@@ -4,6 +4,9 @@ function preload() {
   bananaImage = loadImage('/images/banana.png', (img) => {
     img.resize(30, 0); // Resize to a width of 30 and auto-adjust height to maintain aspect ratio
   });
+  gorillaImageBeforeThrow = loadImage('/images/gorilla-before-throw.png', (img) => {
+    img.resize(40, 0); // Resize to a width of 40 and auto-adjust height to maintain aspect ratio
+  });
 }
 class GorillasView {
   constructor(game) {
@@ -22,8 +25,18 @@ class GorillasView {
   drawGorillas() {
     for (let i = 0; i < this.game.gorillas.length; i++) {
       let gorilla = this.game.gorillas[i];
-      fill(i === 0 ? COLORS.GORILLA : COLORS.GORILLA_2);
-      ellipse(gorilla.x, gorilla.y, 40, 40);
+      let imgWidth = 40; // Adjust as needed for your graphic's size
+      let imgHeight =
+        (gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width) *
+        imgWidth;
+
+      image(
+        gorillaImageBeforeThrow,
+        gorilla.x - imgWidth / 2,
+        gorilla.y - imgHeight,
+        imgWidth,
+        imgHeight
+      );
     }
   }
 
@@ -136,14 +149,22 @@ class GorillasView {
   }
 
   render() {
-    background(220); // Clear the canvas first
+    background(220);
     this.drawCityscape();
     this.drawGorillas();
 
     const angle = parseFloat(document.getElementById('angle-slider').value);
     const power = parseFloat(document.getElementById('power-slider').value);
+
+    let imgWidth = 40; // This was the size you used for the gorilla image
+    let imgHeight =
+      (gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width) *
+      imgWidth;
+
+    // Adjust the starting coordinates to be the center of the gorilla
     const startX = this.game.gorillas[this.game.currentPlayer].x;
-    const startY = this.game.gorillas[this.game.currentPlayer].y;
+    const startY =
+      this.game.gorillas[this.game.currentPlayer].y - imgHeight / 2;
 
     this.drawPlannedTrajectory(startX, startY, angle, power);
   }
