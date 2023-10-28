@@ -59,6 +59,15 @@ class GorillasView {
   async drawBananaTrajectory(startX, startY, angle, power) {
     return new Promise((resolve) => {
       const g = 0.0981;
+      let imgWidth = IMAGE_WIDTHS.GORILLA;
+      let imgHeight =
+        (gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width) *
+        imgWidth;
+
+      // Adjust the starting coordinates to be the center of the gorilla
+      startX = startX;
+      startY = startY - imgHeight / 2;
+
       const trajectory = computeTrajectory(
         this.game,
         startX,
