@@ -8,20 +8,6 @@ function preload() {
   gorillaImageBeforeThrow = loadImage('images/gorilla-before-throw.png', (img) => {
     img.resize(40, 0); // Resize to a width of 40 and auto-adjust height to maintain aspect ratio
   });
-  // cityTexture = loadImage('images/city-buildings.jpg', img => {
-  //   img.loadPixels();
-  //   for (let i = 0; i < img.pixels.length; i += 4) {
-  //     img.pixels[i + 3] = img.pixels[i + 3] * 0.7; // Change 0.7 to desired transparency (0 is fully transparent, 1 is fully opaque)
-  //   }
-  //   img.updatePixels();
-  // });
-  // skyTexture = loadImage('images/sky.jpg', img => {
-  //   img.loadPixels();
-  //   for (let i = 0; i < img.pixels.length; i += 4) {
-  //     img.pixels[i + 3] = img.pixels[i + 3] * 0.5; // Change 0.5 to desired transparency (0 is fully transparent, 1 is fully opaque)
-  //   }
-  //   img.updatePixels();
-  // });
   cityTexture = loadImage('images/city-buildings.jpg');
   skyTexture = loadImage('images/sky.jpg');
 }
