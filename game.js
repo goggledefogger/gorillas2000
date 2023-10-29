@@ -1,3 +1,9 @@
+const GAME_STATES = {
+  PLAYING: 'playing',
+  GAME_OVER: 'gameOver',
+  PAUSED: 'paused',
+};
+
 class GorillasGame {
   constructor(player1, player2, numGames) {
     this.player1 = player1;
@@ -9,6 +15,7 @@ class GorillasGame {
     this.gorillas = []; // Positions of the gorillas
     this.wind = 0; // Wind speed and direction
     this.hitPosition = null;
+    this.gameState = GAME_STATES.PLAYING; // Initialize the game state
   }
 
   initializeRound() {
@@ -16,6 +23,7 @@ class GorillasGame {
     this.gorillas = this.positionGorillas();
     this.wind = this.generateWind();
     this.currentPlayer = 0;
+    this.gameState = GAME_STATES.PLAYING;
   }
   generateCityscape() {
     const buildings = [];
@@ -118,7 +126,8 @@ class GorillasGame {
       const gorilla = this.gorillas[i];
       const distance = dist(x, y, gorilla.x, gorilla.y);
 
-      if (distance < 20) {
+      if (distance < COLLISION_DISTANCE) {
+        // Increase this value as needed
         console.log('Collision with gorilla at:', gorilla.x, gorilla.y);
         return { type: 'gorilla', player: i };
       }
@@ -129,5 +138,11 @@ class GorillasGame {
 
   play() {
     // ... logic ...
+  }
+
+  endGame(winningPlayer) {
+    this.gameState = GAME_STATES.GAME_OVER; // Set game state to game over when the game ends
+    this.totalWins[winningPlayer]++;
+    console.log(`Player ${winningPlayer + 1} wins this round!`);
   }
 }

@@ -40,16 +40,10 @@ class GorillasController {
     );
 
     if (collisionResult) {
-      let winTextElement = document.getElementById('win-text');
       switch (collisionResult.hit.type) {
         case 'gorilla':
-          // Handle gorilla collision
-          winTextElement.textContent = `Player ${
-            this.game.currentPlayer + 1
-          } wins this round!`;
-          this.updateScoreboard();
-          // Show the win message
-          document.getElementById('win-message').style.display = 'block';
+          const winningPlayer = 1 - collisionResult.hit.player;
+          this.endGame(winningPlayer);
           break;
         case 'building':
           // Handle building collision
@@ -65,6 +59,18 @@ class GorillasController {
     this.updateView();
   }
 
+  endGame(winningPlayer) {
+    let winTextElement = document.getElementById('win-text');
+    // Handle gorilla collision
+    winTextElement.textContent = `Player ${
+      this.game.currentPlayer + 1
+    } wins this round!`;;
+    // Show the win message
+    document.getElementById('win-message').style.display = 'block';
+    this.game.endGame(winningPlayer);
+
+  }
+
   startGame() {
     this.game.initializeRound();
     this.updateView();
@@ -75,13 +81,6 @@ class GorillasController {
       this.game.initializeRound();
       this.updateView();
     });
-  }
-
-  updateScoreboard() {
-    this.game.totalWins[this.game.currentPlayer]++;
-    document.getElementById(
-      `player${this.game.currentPlayer + 1}-score`
-    ).textContent = this.game.totalWins[this.game.currentPlayer];
   }
 
   updateView() {
