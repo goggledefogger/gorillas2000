@@ -1,5 +1,7 @@
 # Gorillas2000
 
+demo: https://goggledefogger.github.io/gorillas2000/
+
 This project is a modern remake of the classic DOS game, Gorillas. Originally developed by IBM in 1991, the Gorillas game is a two-player, turn-based game where players take turns throwing bananas in an attempt to hit the opponent's gorilla.
 
 ## Game Overview
