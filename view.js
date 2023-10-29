@@ -1,4 +1,5 @@
 let bananaImage;
+let cityTexture;
 
 function preload() {
   bananaImage = loadImage('images/banana.png', (img) => {
@@ -7,20 +8,52 @@ function preload() {
   gorillaImageBeforeThrow = loadImage('images/gorilla-before-throw.png', (img) => {
     img.resize(40, 0); // Resize to a width of 40 and auto-adjust height to maintain aspect ratio
   });
+  cityTexture = loadImage('images/city-buildings.jpg', img => {
+    img.loadPixels();
+    for (let i = 0; i < img.pixels.length; i += 4) {
+      img.pixels[i + 3] = img.pixels[i + 3] * 0.7; // Change 0.7 to desired transparency (0 is fully transparent, 1 is fully opaque)
+    }
+    img.updatePixels();
+  });
 }
 class GorillasView {
   constructor(game) {
     this.game = game;
   }
-
+  
   drawCityscape() {
-    fill(COLORS.BUILDING);
-    stroke(COLORS.BUILDING);
+    // Create an off-screen graphics buffer
+    let maskGraphics = createGraphics(width, height);
+
+    // Draw the buildings on the graphics buffer
+    maskGraphics.fill(255);  // The mask uses grayscale. White means the texture will show, black means it will be hidden.
+    maskGraphics.noStroke();
     for (let i = 0; i < this.game.cityscape.length; i++) {
       let buildingHeight = this.game.cityscape[i];
-      rect(i * 50, height - buildingHeight, 50, buildingHeight);
+      maskGraphics.rect(i * 50, height - buildingHeight, 50, buildingHeight);
+    }
+
+    // Use the buffer as a mask for the cityTexture
+    cityTexture.mask(maskGraphics);
+
+    // Draw the masked cityTexture on the canvas
+    image(cityTexture, 0, 0, width, height);
+
+    // Draw the building outlines
+    stroke(0);  // Black outline
+    strokeWeight(3);  // Thicker outline
+    noFill();
+    for (let i = 0; i < this.game.cityscape.length; i++) {
+      let buildingHeight = this.game.cityscape[i];
+      beginShape();
+      vertex(i * 50, height);
+      vertex(i * 50, height - buildingHeight);
+      vertex((i + 1) * 50, height - buildingHeight);
+      vertex((i + 1) * 50, height);
+      endShape(CLOSE);
     }
   }
+
 
   drawGorillas() {
     for (let i = 0; i < this.game.gorillas.length; i++) {
