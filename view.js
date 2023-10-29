@@ -15,12 +15,28 @@ function preload() {
     }
     img.updatePixels();
   });
+  skyTexture = loadImage('images/sky.jpg', img => {
+    img.loadPixels();
+    for (let i = 0; i < img.pixels.length; i += 4) {
+      img.pixels[i + 3] = img.pixels[i + 3] * 0.5; // Change 0.5 to desired transparency (0 is fully transparent, 1 is fully opaque)
+    }
+    img.updatePixels();
+  });
+
 }
 class GorillasView {
   constructor(game) {
     this.game = game;
   }
-  
+
+  drawSky() {
+    for (let x = 0; x < width; x += skyTexture.width) {
+      for (let y = 0; y < height; y += skyTexture.height) {
+        image(skyTexture, x, y);
+      }
+    }
+  }
+
   drawCityscape() {
     // Create an off-screen graphics buffer
     let maskGraphics = createGraphics(width, height);
@@ -117,6 +133,7 @@ class GorillasView {
 
       const animateThrow = () => {
         background(220);
+        this.drawSky();
         this.drawCityscape();
         this.drawGorillas();
 
@@ -192,6 +209,8 @@ class GorillasView {
 
   render() {
     background(220);
+
+    this.drawSky();
     this.drawCityscape();
     this.drawGorillas();
 
