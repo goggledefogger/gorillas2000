@@ -29,6 +29,7 @@ class GorillasView {
   constructor(game) {
     this.game = game;
     this.maskGraphics = createGraphics(width, height);
+    this.cityGraphics = createGraphics(width, height);
   }
 
   drawSky() {
@@ -56,11 +57,15 @@ class GorillasView {
       );
     }
 
-    // Use the buffer as a mask for the cityTexture
-    cityTexture.mask(this.maskGraphics);
+    // Clear the previous content of the city graphics buffer
+    this.cityGraphics.clear();
 
-    // Draw the masked cityTexture on the canvas
-    image(cityTexture, 0, 0, width, height);
+    // Apply the mask to the city texture and draw it on the city graphics buffer
+    cityTexture.mask(this.maskGraphics);
+    this.cityGraphics.image(cityTexture, 0, 0, width, height);
+
+    // Draw the masked city graphics buffer on the canvas
+    image(this.cityGraphics, 0, 0, width, height);
 
     // Draw the building outlines
     stroke(0);
@@ -239,5 +244,10 @@ class GorillasView {
       fill(0, 0, 0, 127); // Semi-transparent black
       rect(0, 0, width, height);
     }
+  }
+
+  nextGame() {
+    this.maskGraphics.clear();
+    this.cityGraphics.clear();
   }
 }
