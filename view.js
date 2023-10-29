@@ -8,25 +8,27 @@ function preload() {
   gorillaImageBeforeThrow = loadImage('images/gorilla-before-throw.png', (img) => {
     img.resize(40, 0); // Resize to a width of 40 and auto-adjust height to maintain aspect ratio
   });
-  cityTexture = loadImage('images/city-buildings.jpg', img => {
-    img.loadPixels();
-    for (let i = 0; i < img.pixels.length; i += 4) {
-      img.pixels[i + 3] = img.pixels[i + 3] * 0.7; // Change 0.7 to desired transparency (0 is fully transparent, 1 is fully opaque)
-    }
-    img.updatePixels();
-  });
-  skyTexture = loadImage('images/sky.jpg', img => {
-    img.loadPixels();
-    for (let i = 0; i < img.pixels.length; i += 4) {
-      img.pixels[i + 3] = img.pixels[i + 3] * 0.5; // Change 0.5 to desired transparency (0 is fully transparent, 1 is fully opaque)
-    }
-    img.updatePixels();
-  });
-
+  // cityTexture = loadImage('images/city-buildings.jpg', img => {
+  //   img.loadPixels();
+  //   for (let i = 0; i < img.pixels.length; i += 4) {
+  //     img.pixels[i + 3] = img.pixels[i + 3] * 0.7; // Change 0.7 to desired transparency (0 is fully transparent, 1 is fully opaque)
+  //   }
+  //   img.updatePixels();
+  // });
+  // skyTexture = loadImage('images/sky.jpg', img => {
+  //   img.loadPixels();
+  //   for (let i = 0; i < img.pixels.length; i += 4) {
+  //     img.pixels[i + 3] = img.pixels[i + 3] * 0.5; // Change 0.5 to desired transparency (0 is fully transparent, 1 is fully opaque)
+  //   }
+  //   img.updatePixels();
+  // });
+  cityTexture = loadImage('images/city-buildings.jpg');
+  skyTexture = loadImage('images/sky.jpg');
 }
 class GorillasView {
   constructor(game) {
     this.game = game;
+    this.maskGraphics = createGraphics(width, height);
   }
 
   drawSky() {
@@ -38,26 +40,31 @@ class GorillasView {
   }
 
   drawCityscape() {
-    // Create an off-screen graphics buffer
-    let maskGraphics = createGraphics(width, height);
+    // Clear the previous content of the graphics buffer
+    this.maskGraphics.clear();
 
     // Draw the buildings on the graphics buffer
-    maskGraphics.fill(255);  // The mask uses grayscale. White means the texture will show, black means it will be hidden.
-    maskGraphics.noStroke();
+    this.maskGraphics.fill(255);
+    this.maskGraphics.noStroke();
     for (let i = 0; i < this.game.cityscape.length; i++) {
       let buildingHeight = this.game.cityscape[i];
-      maskGraphics.rect(i * 50, height - buildingHeight, 50, buildingHeight);
+      this.maskGraphics.rect(
+        i * 50,
+        height - buildingHeight,
+        50,
+        buildingHeight
+      );
     }
 
     // Use the buffer as a mask for the cityTexture
-    cityTexture.mask(maskGraphics);
+    cityTexture.mask(this.maskGraphics);
 
     // Draw the masked cityTexture on the canvas
     image(cityTexture, 0, 0, width, height);
 
     // Draw the building outlines
-    stroke(0);  // Black outline
-    strokeWeight(3);  // Thicker outline
+    stroke(0);
+    strokeWeight(3);
     noFill();
     for (let i = 0; i < this.game.cityscape.length; i++) {
       let buildingHeight = this.game.cityscape[i];
@@ -69,7 +76,6 @@ class GorillasView {
       endShape(CLOSE);
     }
   }
-
 
   drawGorillas() {
     for (let i = 0; i < this.game.gorillas.length; i++) {
@@ -228,5 +234,10 @@ class GorillasView {
       this.game.gorillas[this.game.currentPlayer].y - imgHeight / 2;
 
     this.drawPlannedTrajectory(startX, startY, angle, power);
+
+    if (this.game.gameState === GAME_STATES.GAME_OVER) {
+      fill(0, 0, 0, 127); // Semi-transparent black
+      rect(0, 0, width, height);
+    }
   }
 }

@@ -1,7 +1,9 @@
 body {
   font-family: Arial, sans-serif;
-  font-weight: 400; /* Slightly bolder text */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
+  font-weight: 400;
+  /* Slightly bolder text */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  /* Subtle text shadow */
   margin: 0;
   padding: 0;
   display: flex;
@@ -10,33 +12,47 @@ body {
   justify-content: center;
   height: 100vh;
   /* background-color: #f4f4f4; */
-  background: linear-gradient(to bottom, #f4f4f4, #e0e0e0); /* Subtle gradient */
+  background: linear-gradient(to bottom, #f4f4f4, #e0e0e0);
+  /* Subtle gradient */
   min-height: -webkit-fill-available;
 }
 
 #game-wrapper {
   display: flex;
   align-items: center;
-  justify-content: space-between;  /* Distribute space between children */
-  width: 100%; /* Take up the full width available */
+  justify-content: space-between;
+  /* Distribute space between children */
+  width: 100%;
+  /* Take up the full width available */
   max-width: 90vw;
-  flex-grow: 1; /* Ensure the game-wrapper takes the full height */
-  flex-direction: column; /* Adjusted for better layout flow */
-  margin-bottom: 20px; /* Add some space at the bottom */
+  flex-grow: 1;
+  /* Ensure the game-wrapper takes the full height */
+  flex-direction: column;
+  /* Adjusted for better layout flow */
+  margin-bottom: 20px;
+  /* Add some space at the bottom */
 }
 
 #scoreboard {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #007BFF; /* Blue background to match the button */
-  color: white; /* White text */
-  padding: 5px 10px; /* Padding for spacing */
-  border-radius: 5px; /* Rounded corners to match other UI elements */
-  width: 60%; /* Adjust as needed */
-  margin: 15px auto; /* Center and add some spacing */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  flex-shrink: 0;  /* Ensure the scoreboard doesn't shrink */
+  background-color: #007BFF;
+  /* Blue background to match the button */
+  color: white;
+  /* White text */
+  padding: 5px 10px;
+  /* Padding for spacing */
+  border-radius: 5px;
+  /* Rounded corners to match other UI elements */
+  width: 60%;
+  /* Adjust as needed */
+  margin: 15px auto;
+  /* Center and add some spacing */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for depth */
+  flex-shrink: 0;
+  /* Ensure the scoreboard doesn't shrink */
 }
 
 .player-score {
@@ -45,20 +61,25 @@ body {
 }
 
 .player-label {
-  font-weight: 400; /* Slightly bolder text for the label */
-  margin-right: 5px; /* Some spacing */
+  font-weight: 400;
+  /* Slightly bolder text for the label */
+  margin-right: 5px;
+  /* Some spacing */
 }
 
 .score {
-  font-weight: 700; /* Bold text for the score */
-  font-size: 1.2em; /* Slightly larger font size for emphasis */
+  font-weight: 700;
+  /* Bold text for the score */
+  font-size: 1.2em;
+  /* Slightly larger font size for emphasis */
 }
 
 #menu {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%; /* Full width */
+  width: 100%;
+  /* Full width */
 }
 
 #main-content {
@@ -73,46 +94,68 @@ body {
   justify-content: center;
   padding: 10px 0;
   box-sizing: border-box;
-  flex-grow: 1; /* Allow #controls to grow and take up all available space */
-  width: 100%; /* Allow controls to size based on content */
+  flex-grow: 1;
+  /* Allow #controls to grow and take up all available space */
+  width: 100%;
+  /* Allow controls to size based on content */
 }
 
-#controls label, #controls input[type="range"] {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for inputs */
+#controls label,
+#controls input[type="range"] {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for inputs */
 }
 
 /* Controls Styling */
-#controls label, #controls button, #controls input {
-  margin-bottom: 10px; /* Add some spacing between controls */
-  padding: 5px; /* Padding for better touch feel */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s; /* Smooth transition for hover effects */
+#controls label,
+#controls button,
+#controls input {
+  margin-bottom: 10px;
+  /* Add some spacing between controls */
+  padding: 5px;
+  /* Padding for better touch feel */
+  border-radius: 5px;
+  /* Rounded corners */
+  transition: background-color 0.3s;
+  /* Smooth transition for hover effects */
 }
 
 #controls button {
-  cursor: pointer; /* Hand cursor for buttons */
-  background-color: #007BFF; /* Blue background */
-  color: white; /* White text */
-  border: none; /* Remove border */
-  padding: 10px 20px; /* Larger padding for buttons */
-  transform: scale(1); /* Default scale */
-  transition: transform 0.3s; /* Transition effect */
+  cursor: pointer;
+  /* Hand cursor for buttons */
+  background-color: #007BFF;
+  /* Blue background */
+  color: white;
+  /* White text */
+  border: none;
+  /* Remove border */
+  padding: 10px 20px;
+  /* Larger padding for buttons */
+  transform: scale(1);
+  /* Default scale */
+  transition: transform 0.3s;
+  /* Transition effect */
 }
 
 #controls button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  transform: scale(1.05); /* Scale up slightly on hover */
+  background-color: #0056b3;
+  /* Darker blue on hover */
+  transform: scale(1.05);
+  /* Scale up slightly on hover */
 }
 
 #controls button:active {
-  background-color: #003d80; /* Even darker blue when pressed */
+  background-color: #003d80;
+  /* Even darker blue when pressed */
 }
 
 #canvas-container {
-  width: 100%; 
-  padding-bottom: 56.25%; /* 4:3 aspect ratio */
+  width: 100%;
+  padding-bottom: 56.25%;
+  /* 4:3 aspect ratio */
   position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow around the canvas */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow around the canvas */
 }
 
 canvas {
@@ -131,28 +174,27 @@ canvas {
 }
 
 #win-message {
-  display: none;
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.7);
-  /* Semi-transparent background to overlay on the game content */
+  padding: 20px;
   color: white;
-  font-size: 24px;
+  font-size: 2em;
   text-align: center;
-
-  /* Flexbox settings to center the content */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border-radius: 10px;
+  z-index: 1000;
+  /* High z-index to bring it to the front */
+  display: none;
+  /* Initially hidden */
 }
 
 /* Responsive Font Sizes */
 @media screen and (max-width: 767px) {
   body {
-    font-size: 0.9em; /* Slightly reduce font size for mobile */
+    font-size: 0.9em;
+    /* Slightly reduce font size for mobile */
   }
 }
 
@@ -160,14 +202,19 @@ canvas {
 @media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
   #main-content {
     flex-direction: column-reverse;
-    align-items: stretch; /* Stretch children to fill available width */
-    width: 90%; /* Use more width */
+    align-items: stretch;
+    /* Stretch children to fill available width */
+    width: 90%;
+    /* Use more width */
   }
-  
+
   #canvas-container {
-    width: 85%; /* Further reduce the width */
-    padding-bottom: 63.75%; /* Adjusted for a 3:4 aspect ratio */
-    margin: 0 auto 20px; /* Add vertical spacing between canvas and controls */
+    width: 85%;
+    /* Further reduce the width */
+    padding-bottom: 63.75%;
+    /* Adjusted for a 3:4 aspect ratio */
+    margin: 0 auto 20px;
+    /* Add vertical spacing between canvas and controls */
   }
 }
 
@@ -175,9 +222,12 @@ canvas {
 @media screen and (max-width: 767px) {
   #game-wrapper {
     width: 100%;
-    padding: 0 10px; /* Add padding to the sides for some spacing */
-    height: auto; /* Ensure the wrapper adjusts based on content */
-    padding-bottom: 20px; /* Add padding to the bottom */
+    padding: 0 10px;
+    /* Add padding to the sides for some spacing */
+    height: auto;
+    /* Ensure the wrapper adjusts based on content */
+    padding-bottom: 20px;
+    /* Add padding to the bottom */
   }
 
   #main-content {
@@ -188,9 +238,11 @@ canvas {
 
   #canvas-container {
     width: 100%;
-    min-height: 50vh; /* Ensure a minimum height for canvas on mobile */
+    min-height: 50vh;
+    /* Ensure a minimum height for canvas on mobile */
     height: auto;
-    padding-bottom: 50%; /* Adjust based on your content and desired aspect ratio */
+    padding-bottom: 50%;
+    /* Adjust based on your content and desired aspect ratio */
   }
 
   #controls {
