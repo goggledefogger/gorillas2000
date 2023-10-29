@@ -10,6 +10,7 @@ const COLORS = {
   TRAJECTORY: '#FF0000', // Red
   BANANA_FILL: '#DAA520', // Dark Yellow (Goldenrod)
   BANANA_STROKE: '#000000', // Black
+  SKY: '#ADD8E6'  // This is a light blue color
 };
 const IMAGE_WIDTHS = {
   GORILLA: 60,
