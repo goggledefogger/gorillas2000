@@ -16,6 +16,17 @@ class GorillasView {
     this.game = game;
     this.maskGraphics = createGraphics(width, height);
     this.cityGraphics = createGraphics(width, height);
+    this.pastHitsGraphics = createGraphics(width, height);
+    this.explosions = [];
+    this.startAnimationLoop();
+  }
+
+  startAnimationLoop() {
+    const animate = () => {
+      this.renderExplosions();
+      requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
   }
 
   drawSky() {
@@ -198,10 +209,30 @@ class GorillasView {
   }
 
   showExplosion(x, y) {
-    push(); // Save the current drawing state
-    fill(255, 0, 0);
-    ellipse(x, y, 40, 40);
-    pop(); // Restore the drawing state
+    const explosion = new Explosion(x, y);
+    this.explosions.push(explosion);
+    // Set a timeout to start fading the explosion after a certain amount of time
+    setTimeout(() => {
+      explosion.hide();
+    }, 1000); // Adjust the time as needed
+
+    // Draw a permanent mark on the pastHits graphics buffer
+    this.pastHitsGraphics.push();
+    this.pastHitsGraphics.fill(0, 0, 0, 150); // Black with some transparency
+    this.pastHitsGraphics.noStroke();
+    this.pastHitsGraphics.ellipse(x, y, 20); // You can adjust the size and color as needed
+    this.pastHitsGraphics.pop();
+  }
+
+  renderExplosions() {
+    for (let i = this.explosions.length - 1; i >= 0; i--) {
+      const explosion = this.explosions[i];
+      explosion.update();
+      explosion.render();
+      if (explosion.finished) {
+        this.explosions.splice(i, 1);
+      }
+    }
   }
 
   render() {
@@ -211,10 +242,13 @@ class GorillasView {
     this.drawCityscape();
     this.drawGorillas();
 
+    // Render the past hits
+    image(this.pastHitsGraphics, 0, 0);
+
     const angle = parseFloat(document.getElementById('angle-slider').value);
     const power = parseFloat(document.getElementById('power-slider').value);
 
-    let imgWidth = 40; // This was the size you used for the gorilla image
+    let imgWidth = IMAGE_WIDTHS.GORILLA;
     let imgHeight =
       (gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width) *
       imgWidth;
@@ -235,5 +269,41 @@ class GorillasView {
   nextGame() {
     this.maskGraphics.clear();
     this.cityGraphics.clear();
+    this.pastHitsGraphics.clear();
+  }
+}
+
+class Explosion {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.radius = 0;
+    this.maxRadius = 40;
+    this.finished = false;
+    this.transparency = 255; // Fully opaque
+  }
+
+  update() {
+    if (this.radius < this.maxRadius) {
+      this.radius += 2; // Increase the radius to expand the circle
+    } else {
+      this.transparency -= 5; // Decrease the transparency to fade the circle
+      if (this.transparency <= 0) {
+        this.finished = true; // The explosion is finished when it's fully transparent
+      }
+    }
+  }
+
+  hide() {
+    this.transparency = 0;
+    this.update();
+  }
+
+  render() {
+    push();
+    fill(255, 0, 0, this.transparency);
+    noStroke();
+    ellipse(this.x, this.y, this.radius * 2);
+    pop();
   }
 }
