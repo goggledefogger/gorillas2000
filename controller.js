@@ -25,6 +25,12 @@ class GorillasController {
       const power = parseFloat(powerSlider.value);
       this.executeThrow(angle, power);
     });
+
+    // Add event listener for the continue button to hide the message and start the next round
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      document.getElementById('win-message').style.display = 'none';
+      this.startGame();
+    });
   }
 
   async executeThrow(angle, power) {
@@ -68,19 +74,12 @@ class GorillasController {
     // Show the win message
     document.getElementById('win-message').style.display = 'block';
     this.game.endGame(winningPlayer);
-
   }
 
   startGame() {
     this.game.initializeRound();
+    this.view.nextGame();
     this.updateView();
-
-    // Add event listener for the continue button to hide the message and start the next round
-    document.getElementById('continue-btn').addEventListener('click', () => {
-      document.getElementById('win-message').style.display = 'none';
-      this.game.initializeRound();
-      this.updateView();
-    });
   }
 
   updateView() {
@@ -101,3 +100,4 @@ function setup() {
 
   controller.startGame();
 }
+
