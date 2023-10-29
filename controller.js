@@ -70,10 +70,11 @@ class GorillasController {
     // Handle gorilla collision
     winTextElement.textContent = `Player ${
       this.game.currentPlayer + 1
-    } wins this round!`;;
+    } wins this round!`;
     // Show the win message
     document.getElementById('win-message').style.display = 'block';
     this.game.endGame(winningPlayer);
+    this.updateView();
   }
 
   startGame() {
@@ -82,7 +83,18 @@ class GorillasController {
     this.updateView();
   }
 
+  updateScoreboard() {
+    const player1ScoreElement = document.getElementById('player1-score');
+    const player2ScoreElement = document.getElementById('player2-score');
+
+    if (player1ScoreElement && player2ScoreElement) {
+      player1ScoreElement.textContent = this.game.totalWins[0];
+      player2ScoreElement.textContent = this.game.totalWins[1];
+    }
+  }
+
   updateView() {
+    this.updateScoreboard();
     this.view.render();
   }
 }
