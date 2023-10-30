@@ -38,10 +38,13 @@ class GorillasView {
   }
 
   drawCityscape() {
-    // Clear the previous content of the graphics buffer
-    this.maskGraphics.clear();
+    this.drawBuildings();
+    this.applyCityTexture();
+    this.drawBuildingOutlines();
+  }
 
-    // Draw the buildings on the graphics buffer
+  drawBuildings() {
+    this.maskGraphics.clear();
     this.maskGraphics.fill(255);
     this.maskGraphics.noStroke();
     for (let i = 0; i < this.game.cityscape.length; i++) {
@@ -53,18 +56,16 @@ class GorillasView {
         buildingHeight
       );
     }
+  }
 
-    // Clear the previous content of the city graphics buffer
+  applyCityTexture() {
     this.cityGraphics.clear();
-
-    // Apply the mask to the city texture and draw it on the city graphics buffer
     cityTexture.mask(this.maskGraphics);
     this.cityGraphics.image(cityTexture, 0, 0, width, height);
-
-    // Draw the masked city graphics buffer on the canvas
     image(this.cityGraphics, 0, 0, width, height);
+  }
 
-    // Draw the building outlines
+  drawBuildingOutlines() {
     stroke(0);
     strokeWeight(3);
     noFill();
