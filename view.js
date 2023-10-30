@@ -22,6 +22,16 @@ class GorillasView {
     this.pastHitsGraphics = createGraphics(width, height);
     this.explosions = [];
     this.startAnimationLoop();
+
+    // Precompute aspect ratios and dimensions
+    this.gorillaAspectRatio =
+      gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width;
+    this.gorillaWidth = IMAGE_WIDTHS.GORILLA;
+    this.gorillaHeight = this.gorillaAspectRatio * this.gorillaWidth;
+
+    this.bananaAspectRatio = bananaImage.height / bananaImage.width;
+    this.bananaWidth = 15; // Adjust as needed
+    this.bananaHeight = this.bananaAspectRatio * this.bananaWidth;
   }
 
   startAnimationLoop() {
@@ -103,36 +113,24 @@ class GorillasView {
   }
 
   drawGorillas() {
-    for (let i = 0; i < this.game.gorillas.length; i++) {
-      let gorilla = this.game.gorillas[i];
-      let imgWidth = IMAGE_WIDTHS.GORILLA;
-      let imgHeight =
-        (gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width) *
-        imgWidth;
-
+    for (const gorilla of this.game.gorillas) {
       image(
         gorillaImageBeforeThrow,
-        gorilla.x - imgWidth / 2,
-        gorilla.y - imgHeight,
-        imgWidth,
-        imgHeight
+        gorilla.x - this.gorillaWidth / 2,
+        gorilla.y - this.gorillaHeight,
+        this.gorillaWidth,
+        this.gorillaHeight
       );
     }
   }
 
   drawBanana(x, y) {
-    // Adjust width based on your preference
-    let newWidth = 15; // Adjust this value based on your desired width
-
-    let aspectRatio = bananaImage.height / bananaImage.width;
-    let newHeight = aspectRatio * newWidth;
-
     image(
       bananaImage,
-      x - newWidth / 2,
-      y - newHeight / 2,
-      newWidth,
-      newHeight
+      x - this.bananaWidth / 2,
+      y - this.bananaHeight / 2,
+      this.bananaWidth,
+      this.bananaHeight
     );
   }
 
