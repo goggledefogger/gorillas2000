@@ -154,7 +154,7 @@ class GorillasView {
           image(bananaImage, -bananaImage.width / 2, -bananaImage.height / 2); // Draw the banana centered around the new origin
           pop(); // Restore drawing settings
 
-          rotationAngle += radians(10); // Increment the rotation angle
+          rotationAngle += radians(ROTATION_ANGLE); // Increment the rotation angle
 
           // Check for collisions
           hit = this.game.checkCollision(position.x, position.y);
