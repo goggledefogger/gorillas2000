@@ -33,6 +33,13 @@ class GorillasController {
     });
   }
 
+  startFirebaseListener(gameId) {
+    window.createGameStateListener(gameId, (newState) => {
+      this.game.loadFromState(newState);
+      this.updateView();
+    });
+  }
+
   async executeThrow(angle, power) {
     let startX = this.game.gorillas[this.game.currentPlayer].x;
     let startY = this.game.gorillas[this.game.currentPlayer].y;
@@ -111,5 +118,6 @@ function setup() {
   controller = new GorillasController(game, view);
 
   controller.startGame();
+  controller.startFirebaseListener('24');
 }
 

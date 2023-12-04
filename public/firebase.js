@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getDatabase, ref, onValue, set } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,3 +14,18 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+const db = getDatabase();
+
+window.writeGameState = function(gameState) {
+  set(ref(db, 'games/' + gameState.gameId), gameState);
+}
+
+window.createGameStateListener = function(gameId, callback) {
+  const gameRef = ref(db, 'games/' + gameId);
+  onValue(gameRef, (snapshot) => {
+    const data = snapshot.val();
+    return callback(data);
+  });
+}
+
