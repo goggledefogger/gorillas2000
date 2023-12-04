@@ -192,7 +192,7 @@ class GorillasGame {
       cityscape: this.cityscape,
       gorillas: this.gorillas,
       wind: this.wind,
-      hitPosition: this.hitPosition,
+      hitPosition: this.hitPosition || null,
       gameId: this.gameId,
     };
     return gameState;
@@ -209,8 +209,5 @@ class GorillasGame {
     this.wind = gameState.wind;
     this.hitPosition = gameState.hitPosition;
     this.gameId = gameState.gameId;
-
-    // update the view
-    this.updateView();
   }
 }
