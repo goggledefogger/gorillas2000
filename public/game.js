@@ -16,6 +16,7 @@ class GorillasGame {
     this.wind = 0; // Wind speed and direction
     this.hitPosition = null;
     this.gameState = GAME_STATES.PLAYING; // Initialize the game state
+    this.gameId = 24;
   }
 
   initializeRound() {
@@ -24,6 +25,8 @@ class GorillasGame {
     this.wind = this.generateWind();
     this.currentPlayer = 0;
     this.gameState = GAME_STATES.PLAYING;
+
+    this.updateGameState(); // Update the game state on Firebase
   }
   generateCityscape() {
     const buildings = [];
@@ -106,6 +109,7 @@ class GorillasGame {
 
   switchPlayer() {
     this.currentPlayer = 1 - this.currentPlayer;
+    this.updateGameState(); // Update game state on Firebase
   }
 
   getNextPosition(xPos, yPos, velocityX, velocityY, time) {
@@ -130,6 +134,8 @@ class GorillasGame {
     if (hit) {
       this.hitPosition = { x: xPos, y: yPos };
     }
+
+    this.updateGameState(); // Update the game state on Firebase
 
     return hit;
   }
@@ -167,5 +173,44 @@ class GorillasGame {
     this.gameState = GAME_STATES.GAME_OVER; // Set game state to game over when the game ends
     this.totalWins[winningPlayer]++;
     console.log(`Player ${winningPlayer + 1} wins this round!`);
+
+    this.updateGameState(); // Update game state on Firebase
+  }
+
+  updateGameState() {
+    const gameState = this.getGameState();
+    window.writeGameState(gameState);
+  }
+
+  getGameState() {
+    const gameState = {
+      player1: this.player1,
+      player2: this.player2,
+      numGames: this.numGames,
+      totalWins: this.totalWins,
+      currentPlayer: this.currentPlayer,
+      cityscape: this.cityscape,
+      gorillas: this.gorillas,
+      wind: this.wind,
+      hitPosition: this.hitPosition,
+      gameId: this.gameId,
+    };
+    return gameState;
+  }
+
+  loadFromState(gameState) {
+    this.player1 = gameState.player1;
+    this.player2 = gameState.player2;
+    this.numGames = gameState.numGames;
+    this.totalWins = gameState.totalWins;
+    this.currentPlayer = gameState.currentPlayer;
+    this.cityscape = gameState.cityscape;
+    this.gorillas = gameState.gorillas;
+    this.wind = gameState.wind;
+    this.hitPosition = gameState.hitPosition;
+    this.gameId = gameState.gameId;
+
+    // update the view
+    this.updateView();
   }
 }
