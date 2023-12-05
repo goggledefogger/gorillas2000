@@ -11,6 +11,7 @@ class GorillasController {
     const angleSlider = document.getElementById('angle-slider');
     const powerSlider = document.getElementById('power-slider');
     const throwButton = document.getElementById('throw-button');
+    const resetButton = document.getElementById('reset-button');
 
     angleSlider.addEventListener('input', () => {
       this.updateView();
@@ -30,6 +31,11 @@ class GorillasController {
     document.getElementById('continue-btn').addEventListener('click', () => {
       document.getElementById('win-message').style.display = 'none';
       this.startGame();
+    });
+
+    resetButton.addEventListener('click', () => {
+      this.game.resetGame();
+      this.updateView();
     });
   }
 
