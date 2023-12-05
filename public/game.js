@@ -20,14 +20,10 @@ class GorillasGame {
   }
 
   initializeRound() {
-    this.cityscape = this.generateCityscape();
-    this.gorillas = this.positionGorillas();
-    this.wind = this.generateWind();
-    this.currentPlayer = 0;
-    this.gameState = GAME_STATES.PLAYING;
-
     this.loadFromState(this.getGameState());
+    this.resetGame(true);
   }
+
   generateCityscape() {
     const buildings = [];
     const numBuildings = width / 50;
@@ -175,6 +171,19 @@ class GorillasGame {
     console.log(`Player ${winningPlayer + 1} wins this round!`);
 
     this.updateGameState(); // Update game state on Firebase
+  }
+
+  resetGame(bypassUpdatingDb) {
+    this.hitPosition = null;
+    this.cityscape = this.generateCityscape();
+    this.gorillas = this.positionGorillas();
+    this.wind = this.generateWind();
+    this.currentPlayer = 0;
+    this.gameState = GAME_STATES.PLAYING;
+
+    if (!bypassUpdatingDb) {
+      this.updateGameState(); // Update game state on Firebase
+    }
   }
 
   updateGameState() {
