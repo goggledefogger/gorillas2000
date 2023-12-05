@@ -80,6 +80,9 @@ body {
   align-items: center;
   width: 100%;
   /* Full width */
+  position: fixed;
+  top: 0;
+  z-index: 1;
 }
 
 #main-content {

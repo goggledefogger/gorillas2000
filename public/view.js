@@ -57,9 +57,10 @@ class GorillasView {
   }
 
   drawBuildings() {
-    this.maskGraphics.clear();
-    this.maskGraphics.fill(255);
+    this.maskGraphics.clear(); // Clear the previous mask
+    this.maskGraphics.fill(255); // White color for the mask
     this.maskGraphics.noStroke();
+
     this.game.cityscape.forEach((buildingHeight, i) => {
       this.maskGraphics.rect(
         i * 50,
@@ -92,7 +93,7 @@ class GorillasView {
 
   applyCityTexture() {
     this.cityGraphics.clear();
-    cityTexture.mask(this.maskGraphics);
+    cityTexture.mask(this.maskGraphics); // Apply the updated mask
     this.cityGraphics.image(cityTexture, 0, 0, width, height);
     image(this.cityGraphics, 0, 0, width, height);
   }

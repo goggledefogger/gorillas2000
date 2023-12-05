@@ -38,7 +38,9 @@ class GorillasController {
   }
 
   dbGameStateChanged(gameState) {
-    this.game.loadFromState(gameState);
+    if (gameState) {
+      this.game.loadFromState(gameState);
+    }
     this.updateView();
   }
 
@@ -89,7 +91,6 @@ class GorillasController {
   startGame() {
     this.game.initializeRound();
     this.view.nextGame();
-    this.updateView();
   }
 
   updateScoreboard() {
