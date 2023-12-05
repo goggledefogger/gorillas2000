@@ -11,6 +11,7 @@ class GorillasController {
     const angleSlider = document.getElementById('angle-slider');
     const powerSlider = document.getElementById('power-slider');
     const throwButton = document.getElementById('throw-button');
+    const resetButton = document.getElementById('reset-button');
 
     angleSlider.addEventListener('input', () => {
       this.updateView();
@@ -31,6 +32,22 @@ class GorillasController {
       document.getElementById('win-message').style.display = 'none';
       this.startGame();
     });
+
+    resetButton.addEventListener('click', () => {
+      this.game.resetGame();
+      this.updateView();
+    });
+  }
+
+  startFirebaseListener(gameId) {
+    window.createGameStateListener(gameId, this.dbGameStateChanged.bind(this));
+  }
+
+  dbGameStateChanged(gameState) {
+    if (gameState) {
+      this.game.loadFromState(gameState);
+    }
+    this.updateView();
   }
 
   async executeThrow(angle, power) {
@@ -80,7 +97,6 @@ class GorillasController {
   startGame() {
     this.game.initializeRound();
     this.view.nextGame();
-    this.updateView();
   }
 
   updateScoreboard() {
@@ -111,5 +127,6 @@ function setup() {
   controller = new GorillasController(game, view);
 
   controller.startGame();
+  controller.startFirebaseListener('24');
 }
 
