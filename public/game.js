@@ -26,7 +26,7 @@ class GorillasGame {
     this.currentPlayer = 0;
     this.gameState = GAME_STATES.PLAYING;
 
-    this.updateGameState(); // Update the game state on Firebase
+    this.loadFromState(this.getGameState());
   }
   generateCityscape() {
     const buildings = [];

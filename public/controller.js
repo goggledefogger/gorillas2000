@@ -34,10 +34,12 @@ class GorillasController {
   }
 
   startFirebaseListener(gameId) {
-    window.createGameStateListener(gameId, (newState) => {
-      this.game.loadFromState(newState);
-      this.updateView();
-    });
+    window.createGameStateListener(gameId, this.dbGameStateChanged.bind(this));
+  }
+
+  dbGameStateChanged(gameState) {
+    this.game.loadFromState(gameState);
+    this.updateView();
   }
 
   async executeThrow(angle, power) {
