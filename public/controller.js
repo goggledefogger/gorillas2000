@@ -37,6 +37,11 @@ class GorillasController {
       this.game.resetGame();
       this.updateView();
     });
+
+    // Event listener for the replay button
+    document.getElementById('replay-button').addEventListener('click', () => {
+      this.replayLastTurn();
+    });
   }
 
   startFirebaseListener(gameId) {
@@ -79,6 +84,10 @@ class GorillasController {
           break;
       }
     }
+
+    // Save turn data to Firebase
+    this.game.saveTurnData(angle, power, startX, startY, collisionResult);
+
     this.updateView();
   }
 
@@ -103,7 +112,12 @@ class GorillasController {
     const player1ScoreElement = document.getElementById('player1-score');
     const player2ScoreElement = document.getElementById('player2-score');
 
-    if (player1ScoreElement && player2ScoreElement) {
+    if (
+      player1ScoreElement &&
+      player2ScoreElement &&
+      this.game &&
+      this.game.totalWins
+    ) {
       player1ScoreElement.textContent = this.game.totalWins[0];
       player2ScoreElement.textContent = this.game.totalWins[1];
     }
@@ -112,6 +126,34 @@ class GorillasController {
   updateView() {
     this.updateScoreboard();
     this.view.render();
+  }
+
+  async replayLastTurn() {
+    const gameId = 24;
+    try {
+      const lastTurnData = await this.getLastTurnData(gameId);
+
+      if (lastTurnData) {
+        this.view.animateReplay(lastTurnData);
+      }
+    } catch (error) {
+      console.log('Error during replay:', error);
+    }
+  }
+
+  // Method to retrieve the last turn's data from Firebase
+  async getLastTurnData(gameId) {
+    // Create a promise to handle the Firebase callback
+    return new Promise((resolve, reject) => {
+      // Use the existing createGameStateListener function from firebase.js
+      createGameStateListener(gameId, (data) => {
+        if (data && data.lastTurn) {
+          resolve(data.lastTurn);
+        } else {
+          reject('No data found for the last turn');
+        }
+      });
+    });
   }
 }
 

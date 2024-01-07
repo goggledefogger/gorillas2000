@@ -203,6 +203,7 @@ class GorillasGame {
       wind: this.wind,
       hitPosition: this.hitPosition || null,
       gameId: this.gameId,
+      lastTurn: this.lastTurn || null,
     };
     return gameState;
   }
@@ -218,5 +219,19 @@ class GorillasGame {
     this.wind = gameState.wind;
     this.hitPosition = gameState.hitPosition;
     this.gameId = gameState.gameId;
+    this.lastTurn = gameState.lastTurn;
+  }
+
+  saveTurnData(angle, power, startX, startY, hitResult) {
+    this.lastTurn = {
+      angle: angle,
+      power: power,
+      startX: startX,
+      startY: startY,
+      hitResult: hitResult, // Includes collision details if any
+      playerIndex: this.currentPlayer,
+    };
+
+    this.updateGameState();
   }
 }
