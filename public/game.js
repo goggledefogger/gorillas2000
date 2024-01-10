@@ -145,9 +145,6 @@ class GorillasGame {
     }
 
     for (let i = 0; i < this.gorillas.length; i++) {
-      // check if it's the current player gorilla and continue if so
-      if (i === this.currentPlayer) continue;
-
       const gorilla = this.gorillas[i];
       const distance = dist(x, y, gorilla.x, gorilla.y);
 
