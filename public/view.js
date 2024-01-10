@@ -3,7 +3,7 @@ let cityTexture;
 
 function preload() {
   bananaImage = loadImage('images/banana.png', (img) => {
-    img.resize(30, 0); // Resize to a width of 30 and auto-adjust height to maintain aspect ratio
+    img.resize(IMAGE_WIDTHS.BANANA, 0); // Resize using the new constant
   });
   gorillaImageBeforeThrow = loadImage(
     'images/gorilla-before-throw.png',
@@ -30,7 +30,7 @@ class GorillasView {
     this.gorillaHeight = this.gorillaAspectRatio * this.gorillaWidth;
 
     this.bananaAspectRatio = bananaImage.height / bananaImage.width;
-    this.bananaWidth = 15; // Adjust as needed
+    this.bananaWidth = IMAGE_WIDTHS.BANANA;
     this.bananaHeight = this.bananaAspectRatio * this.bananaWidth;
   }
 
