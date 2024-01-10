@@ -229,7 +229,7 @@ class GorillasGame {
       startX: startX,
       startY: startY,
       hitResult: hitResult, // Includes collision details if any
-      playerIndex: this.currentPlayer,
+      playerIndex: (this.currentPlayer + 1) % 2,
     };
 
     this.updateGameState();
