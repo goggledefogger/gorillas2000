@@ -145,7 +145,8 @@ class GorillasView {
         false,
         (hit) => {
           resolve({ hit, position: { x: startX, y: startY } });
-        }
+        },
+        this.game.currentPlayer
       );
     });
   }
@@ -260,14 +261,15 @@ class GorillasView {
   }
 
   animateBananaThrow(startX, startY, angle, power, playerIndex) {
-    const adjustedAngle = this.adjustAngleForPlayer(angle, playerIndex);
     this.animateTrajectory(
       startX,
       startY,
-      adjustedAngle,
+      angle,
       power,
       this.game.wind,
-      false
+      false,
+      null,
+      playerIndex
     );
   }
 
@@ -378,16 +380,6 @@ class GorillasView {
     this.maskGraphics.clear();
     this.cityGraphics.clear();
     this.pastHitsGraphics.clear();
-  }
-
-  adjustAngleForPlayer(angle, playerIndex) {
-    // Assuming player 0 is on the left and player 1 is on the right
-    if (playerIndex === 1) {
-      // For Player 2, adjust the angle to throw to the left
-      return 180 - angle;
-    }
-    // For Player 1, no adjustment is needed
-    return angle;
   }
 }
 

@@ -3,6 +3,7 @@ function computeTrajectory(currentPlayer, startX, startY, angle, power, wind, g)
   let time = 0;
   let xPos = startX;
   let yPos = startY;
+  currentPlayer = currentPlayer || 0;
 
   // Adjust angle based on the current player
   let adjustedAngle = currentPlayer === 0 ? angle : 180 - angle;
