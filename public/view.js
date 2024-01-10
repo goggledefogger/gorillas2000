@@ -224,11 +224,17 @@ class GorillasView {
           if (frameCount > COLLISION_DETECTION_DELAY) {
             let hit = this.game.checkCollision(position.x, position.y);
             if (hit) {
-              this.showExplosion(position.x, position.y);
-              if (onCollision) {
-                onCollision(hit);
+              if (hit.type === 'gorilla' && hit.player === playerIndex) {
+                // ignore the collision with the current player since it's a replay
+                // TODO fix this so instead of ignoring collisions from the current
+                // gorilla, it fixes the issue with immediate gorilla collisions
+              } else {
+                this.showExplosion(position.x, position.y);
+                if (onCollision) {
+                  onCollision(hit);
+                }
+                return; // Stop the animation loop upon collision
               }
-              return; // Stop the animation loop upon collision
             }
           }
 
