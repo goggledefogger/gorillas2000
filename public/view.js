@@ -218,17 +218,26 @@ class GorillasView {
 
           rotationAngle += radians(ROTATION_ANGLE);
 
-          let hit = this.game.checkCollision(position.x, position.y);
-          if (hit && onCollision) {
-            this.showExplosion(position.x, position.y);
-            onCollision(hit);
-          } else {
-            trajectoryIndex++;
-            requestAnimationFrame(animateFrame);
+          // Collision detection after the specified delay
+          if (frameCount > COLLISION_DETECTION_DELAY) {
+            let hit = this.game.checkCollision(position.x, position.y);
+            if (hit) {
+              this.showExplosion(position.x, position.y);
+              if (onCollision) {
+                onCollision(hit);
+              }
+              return; // Stop the animation loop upon collision
+            }
           }
+
+          trajectoryIndex++;
+          frameCount++; // Increment frame counter
+          requestAnimationFrame(animateFrame);
         } else if (!isPreview) {
-          // Handle end of trajectory
-          onCollision && onCollision(null);
+          // Handle end of trajectory without collision
+          if (onCollision) {
+            onCollision(null);
+          }
         }
       };
 
@@ -249,7 +258,17 @@ class GorillasView {
     ellipse(position.x, position.y, 5);
   }
 
-  animateBananaThrow(startX, startY, angle, power) {}
+  animateBananaThrow(startX, startY, angle, power, playerIndex) {
+    const adjustedAngle = this.adjustAngleForPlayer(angle, playerIndex);
+    this.animateTrajectory(
+      startX,
+      startY,
+      adjustedAngle,
+      power,
+      this.game.wind,
+      false
+    );
+  }
 
   animateReplay(lastTurnData) {
     const { startX, startY, angle, power, playerIndex } = lastTurnData;
@@ -339,14 +358,14 @@ class GorillasView {
     const angle = parseFloat(document.getElementById('angle-slider').value);
     const power = parseFloat(document.getElementById('power-slider').value);
 
-     const currentPlayer = this.game.currentPlayer;
-     const gorillaPosition = this.game.gorillas[currentPlayer];
+    const currentPlayer = this.game.currentPlayer;
+    const gorillaPosition = this.game.gorillas[currentPlayer];
 
-     // Adjust for the center of the gorilla
-     const startX = gorillaPosition.x + this.gorillaWidth / 2;
-     const startY = gorillaPosition.y - this.gorillaHeight / 2;
+    // Adjust for the center of the gorilla
+    const startX = gorillaPosition.x + this.gorillaWidth / 2;
+    const startY = gorillaPosition.y - this.gorillaHeight / 2;
 
-     this.drawPlannedTrajectory(startX, startY, angle, power);
+    this.drawPlannedTrajectory(startX, startY, angle, power);
 
     if (this.game.gameState === GAME_STATES.GAME_OVER) {
       fill(0, 0, 0, 127); // Semi-transparent black
@@ -361,10 +380,12 @@ class GorillasView {
   }
 
   adjustAngleForPlayer(angle, playerIndex) {
-    // Assuming Player 1 is on the left (index 0) and Player 2 is on the right (index 1)
+    // Assuming player 0 is on the left and player 1 is on the right
     if (playerIndex === 1) {
+      // For Player 2, adjust the angle to throw to the left
       return 180 - angle;
     }
+    // For Player 1, no adjustment is needed
     return angle;
   }
 }
