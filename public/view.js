@@ -157,7 +157,8 @@ class GorillasView {
     power,
     wind,
     isPreview = false,
-    onCollision = null
+    onCollision = null,
+    playerIndex
   ) {
     const g = 0.0981;
 
@@ -165,7 +166,7 @@ class GorillasView {
     const adjustedStartY = startY - this.gorillaHeight / 2;
 
     const trajectory = computeTrajectory(
-      this.game,
+      playerIndex,
       adjustedStartX,
       adjustedStartY,
       angle,
@@ -272,18 +273,18 @@ class GorillasView {
 
   animateReplay(lastTurnData) {
     const { startX, startY, angle, power, playerIndex } = lastTurnData;
-    const adjustedAngle = this.adjustAngleForPlayer(angle, playerIndex);
 
     this.animateTrajectory(
       startX,
       startY,
-      adjustedAngle,
+      angle,
       power,
       this.game.wind,
       false,
       (hit) => {
-        // You can add any additional logic you need here for after the replay
-      }
+        // Additional logic for after the replay
+      },
+      playerIndex
     );
   }
 
@@ -291,7 +292,7 @@ class GorillasView {
     const g = 0.0981;
     let pulseIndex = 0;
     const trajectory = computeTrajectory(
-      this.game,
+      this.game.currentPlayer,
       startX,
       startY,
       angle,

@@ -1,11 +1,11 @@
-function computeTrajectory(game, startX, startY, angle, power, wind, g) {
+function computeTrajectory(currentPlayer, startX, startY, angle, power, wind, g) {
   let trajectory = [];
   let time = 0;
   let xPos = startX;
   let yPos = startY;
 
   // Adjust angle based on the current player
-  let adjustedAngle = game.currentPlayer === 0 ? angle : 180 - angle;
+  let adjustedAngle = currentPlayer === 0 ? angle : 180 - angle;
   const radianAngle = radians(adjustedAngle);
 
   const adjustedPower = adjustPower(power);
