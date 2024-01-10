@@ -19,6 +19,7 @@ const COLORS = {
 };
 const IMAGE_WIDTHS = {
   GORILLA: 60,
+  BANANA: 30
 }
 
 const COLLISION_DETECTION_DELAY = 5;
