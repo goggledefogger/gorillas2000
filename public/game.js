@@ -17,6 +17,7 @@ class GorillasGame {
     this.hitPosition = null;
     this.gameState = GAME_STATES.PLAYING; // Initialize the game state
     this.gameId = 24;
+    this.lastKnownState = null;
   }
 
   initializeRound() {
@@ -115,27 +116,6 @@ class GorillasGame {
     return { x: xPos, y: yPos };
   }
 
-  async takeTurn(angle, power) {
-    const g = 0.0981; // Gravity, reduced for the scale of our game
-    let xPos = this.gorillas[this.currentPlayer].x;
-    let yPos = this.gorillas[this.currentPlayer].y;
-
-    // Offset the starting position slightly based on angle and power
-    const radianAngle = radians(angle);
-    xPos += 500 * cos(radianAngle); // You can adjust the offset value as needed
-    yPos -= 500 * sin(radianAngle);
-
-    // Use the drawBananaTrajectory function to get the hit status
-    const hit = await this.view.drawBananaTrajectory(xPos, yPos, angle, power);
-    if (hit) {
-      this.hitPosition = { x: xPos, y: yPos };
-    }
-
-    this.updateGameState(); // Update the game state on Firebase
-
-    return hit;
-  }
-
   checkCollision(x, y) {
     const buildingIndex = floor(x / 50);
 
@@ -230,5 +210,30 @@ class GorillasGame {
     };
 
     this.updateGameState();
+  }
+
+  isNewTurn(gameState) {
+    // Check if there's a last known state to compare against
+    if (this.lastKnownState) {
+      const isNewTurnForPlayer =
+        this.lastKnownState.currentPlayer !== gameState.currentPlayer;
+
+      this.lastKnownState = gameState; // Update the last known state
+      return isNewTurnForPlayer;
+    }
+
+    // If there's no last known state, it's not a new turn - just an initial load
+    this.lastKnownState = gameState;
+    return false;
+  }
+
+  handleGameStateChange(gameState) {
+    this.loadFromState(gameState);
+
+    if (this.isNewTurn(gameState)) {
+      // show an alert that the opponent
+      // did another turn and now they can watch the replay
+      this.view.notifyOpponentTurn();
+    }
   }
 }

@@ -49,7 +49,7 @@ class GorillasController {
 
   dbGameStateChanged(gameState) {
     if (gameState) {
-      this.game.loadFromState(gameState);
+      this.game.handleGameStateChange(gameState);
     }
     this.updateView();
   }
