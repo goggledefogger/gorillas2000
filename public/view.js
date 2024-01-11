@@ -390,7 +390,21 @@ class GorillasView {
   }
 
   notifyOpponentTurn() {
-    alert('opponent turn');
+    const notificationElement = document.getElementById(
+      'opponent-turn-notification'
+    );
+    notificationElement.classList.remove('hidden');
+    notificationElement.classList.add('visible');
+
+    const replayButton = document.getElementById('replay-last-turn');
+    if (!replayButton.onclick) {
+      replayButton.onclick = () => {
+        this.animateReplay(this.game.lastTurn);
+        // Hide notification after replay
+        notificationElement.classList.remove('visible');
+        notificationElement.classList.add('hidden');
+      };
+    }
   }
 }
 

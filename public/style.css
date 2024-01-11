@@ -17,6 +17,18 @@ body {
   min-height: -webkit-fill-available;
 }
 
+.visible {
+  display: block !important;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
 #game-wrapper {
   display: flex;
   align-items: center;
@@ -174,6 +186,22 @@ canvas {
   width: 800px;
   height: 600px;
   margin: 0 auto;
+}
+
+#opponent-turn-notification {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  color: white;
+  text-align: center;
+  border-radius: 10px;
+  z-index: 100;
+  /* Make sure it's above the canvas */
+  display: none;
+  /* Initially hidden */
 }
 
 #win-message {
