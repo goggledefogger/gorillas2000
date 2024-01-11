@@ -35,7 +35,6 @@ class GorillasController {
 
     resetButton.addEventListener('click', () => {
       this.game.resetGame();
-      this.updateView();
     });
 
     // Event listener for the replay button
