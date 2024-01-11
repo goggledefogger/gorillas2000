@@ -17,6 +17,7 @@ function preload() {
 class GorillasView {
   constructor(game) {
     this.game = game;
+    game.view = this;
     this.maskGraphics = createGraphics(width, height);
     this.cityGraphics = createGraphics(width, height);
     this.pastHitsGraphics = createGraphics(width, height);
@@ -386,6 +387,10 @@ class GorillasView {
     this.maskGraphics.clear();
     this.cityGraphics.clear();
     this.pastHitsGraphics.clear();
+  }
+
+  notifyOpponentTurn() {
+    alert('opponent turn');
   }
 }
 
