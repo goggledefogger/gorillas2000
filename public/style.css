@@ -188,7 +188,7 @@ canvas {
   margin: 0 auto;
 }
 
-#opponent-turn-notification {
+#turn-notification {
   position: absolute;
   top: 50%;
   left: 50%;

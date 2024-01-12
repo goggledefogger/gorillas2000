@@ -25,6 +25,10 @@ class GorillasGame {
     this.resetGame(true);
   }
 
+  initializeMeAsPlayer(playerIndex) {
+    this.iamPlayer = playerIndex;
+  }
+
   generateCityscape() {
     const buildings = [];
     const numBuildings = width / 50;
@@ -200,13 +204,15 @@ class GorillasGame {
   }
 
   saveTurnData(angle, power, startX, startY, hitResult) {
+    let lastTurnPlayer = (this.currentPlayer + 1) % 2;
+
     this.lastTurn = {
       angle: angle,
       power: power,
       startX: startX,
       startY: startY,
       hitResult: hitResult, // Includes collision details if any
-      playerIndex: (this.currentPlayer + 1) % 2,
+      playerIndex: lastTurnPlayer,
     };
 
     this.updateGameState();
@@ -222,18 +228,20 @@ class GorillasGame {
       return isNewTurnForPlayer;
     }
 
-    // If there's no last known state, it's not a new turn - just an initial load
+    // If there's no last known state, consider it a new turn
     this.lastKnownState = gameState;
-    return false;
+    return true;
   }
 
   handleGameStateChange(gameState) {
     this.loadFromState(gameState);
 
-    if (this.isNewTurn(gameState)) {
+    let newCurrentPlayer = (this.currentPlayer + 1) % 2;
+
+    if (this.isNewTurn(gameState) && newCurrentPlayer !== this.iamPlayer) {
       // show an alert that the opponent
       // did another turn and now they can watch the replay
-      this.view.notifyOpponentTurn();
+      this.view.notifyTurn();
     }
   }
 }
