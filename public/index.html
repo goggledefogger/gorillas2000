@@ -20,6 +20,7 @@
             <span class="score" id="player1-score">0</span>
           </div>
           <button id="reset-button">RESET</button>
+          <button id="replay-button">Replay Last Turn</button>
           <div class="player-score">
             <span class="player-label">Player 2:</span>
             <span class="score" id="player2-score">0</span>
@@ -45,8 +46,15 @@
 
         </div>
 
+
+
         <!-- Canvas for p5.js rendering -->
-        <div id="canvas-container"></div>
+        <div id="canvas-container">
+          <div id="turn-notification" class="hidden">
+            <p>It's your turn!</p>
+            <button id="replay-last-turn">Replay Last Turn</button>
+          </div>
+        </div>
 
       </div>
     </div>

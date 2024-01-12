@@ -17,11 +17,16 @@ class GorillasGame {
     this.hitPosition = null;
     this.gameState = GAME_STATES.PLAYING; // Initialize the game state
     this.gameId = 24;
+    this.lastKnownState = null;
   }
 
   initializeRound() {
     this.loadFromState(this.getGameState());
     this.resetGame(true);
+  }
+
+  initializeMeAsPlayer(playerIndex) {
+    this.iamPlayer = playerIndex;
   }
 
   generateCityscape() {
@@ -115,27 +120,6 @@ class GorillasGame {
     return { x: xPos, y: yPos };
   }
 
-  async takeTurn(angle, power) {
-    const g = 0.0981; // Gravity, reduced for the scale of our game
-    let xPos = this.gorillas[this.currentPlayer].x;
-    let yPos = this.gorillas[this.currentPlayer].y;
-
-    // Offset the starting position slightly based on angle and power
-    const radianAngle = radians(angle);
-    xPos += 500 * cos(radianAngle); // You can adjust the offset value as needed
-    yPos -= 500 * sin(radianAngle);
-
-    // Use the drawBananaTrajectory function to get the hit status
-    const hit = await this.view.drawBananaTrajectory(xPos, yPos, angle, power);
-    if (hit) {
-      this.hitPosition = { x: xPos, y: yPos };
-    }
-
-    this.updateGameState(); // Update the game state on Firebase
-
-    return hit;
-  }
-
   checkCollision(x, y) {
     const buildingIndex = floor(x / 50);
 
@@ -145,9 +129,6 @@ class GorillasGame {
     }
 
     for (let i = 0; i < this.gorillas.length; i++) {
-      // check if it's the current player gorilla and continue if so
-      if (i === this.currentPlayer) continue;
-
       const gorilla = this.gorillas[i];
       const distance = dist(x, y, gorilla.x, gorilla.y);
 
@@ -203,6 +184,7 @@ class GorillasGame {
       wind: this.wind,
       hitPosition: this.hitPosition || null,
       gameId: this.gameId,
+      lastTurn: this.lastTurn || null,
     };
     return gameState;
   }
@@ -218,5 +200,48 @@ class GorillasGame {
     this.wind = gameState.wind;
     this.hitPosition = gameState.hitPosition;
     this.gameId = gameState.gameId;
+    this.lastTurn = gameState.lastTurn;
+  }
+
+  saveTurnData(angle, power, startX, startY, hitResult) {
+    let lastTurnPlayer = (this.currentPlayer + 1) % 2;
+
+    this.lastTurn = {
+      angle: angle,
+      power: power,
+      startX: startX,
+      startY: startY,
+      hitResult: hitResult, // Includes collision details if any
+      playerIndex: lastTurnPlayer,
+    };
+
+    this.updateGameState();
+  }
+
+  isNewTurn(gameState) {
+    // Check if there's a last known state to compare against
+    if (this.lastKnownState) {
+      const isNewTurnForPlayer =
+        this.lastKnownState.currentPlayer !== gameState.currentPlayer;
+
+      this.lastKnownState = gameState; // Update the last known state
+      return isNewTurnForPlayer;
+    }
+
+    // If there's no last known state, consider it a new turn
+    this.lastKnownState = gameState;
+    return true;
+  }
+
+  handleGameStateChange(gameState) {
+    this.loadFromState(gameState);
+
+    let newCurrentPlayer = (this.currentPlayer + 1) % 2;
+
+    if (this.isNewTurn(gameState) && newCurrentPlayer !== this.iamPlayer) {
+      // show an alert that the opponent
+      // did another turn and now they can watch the replay
+      this.view.notifyTurn();
+    }
   }
 }
