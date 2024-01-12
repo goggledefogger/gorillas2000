@@ -3,7 +3,7 @@ let cityTexture;
 
 function preload() {
   bananaImage = loadImage('images/banana.png', (img) => {
-    img.resize(30, 0); // Resize to a width of 30 and auto-adjust height to maintain aspect ratio
+    img.resize(IMAGE_WIDTHS.BANANA, 0); // Resize using the new constant
   });
   gorillaImageBeforeThrow = loadImage(
     'images/gorilla-before-throw.png',
@@ -17,6 +17,7 @@ function preload() {
 class GorillasView {
   constructor(game) {
     this.game = game;
+    game.view = this;
     this.maskGraphics = createGraphics(width, height);
     this.cityGraphics = createGraphics(width, height);
     this.pastHitsGraphics = createGraphics(width, height);
@@ -30,7 +31,7 @@ class GorillasView {
     this.gorillaHeight = this.gorillaAspectRatio * this.gorillaWidth;
 
     this.bananaAspectRatio = bananaImage.height / bananaImage.width;
-    this.bananaWidth = 15; // Adjust as needed
+    this.bananaWidth = IMAGE_WIDTHS.BANANA;
     this.bananaHeight = this.bananaAspectRatio * this.bananaWidth;
   }
 
@@ -134,77 +135,173 @@ class GorillasView {
       this.bananaHeight
     );
   }
-
   async drawBananaTrajectory(startX, startY, angle, power) {
     return new Promise((resolve) => {
-      const g = 0.0981;
-      let imgWidth = IMAGE_WIDTHS.GORILLA;
-      let imgHeight =
-        (gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width) *
-        imgWidth;
-
-      // Adjust the starting coordinates to be the center of the gorilla
-      startX = startX;
-      startY = startY - imgHeight / 2;
-
-      const trajectory = computeTrajectory(
-        this.game,
+      this.animateTrajectory(
         startX,
         startY,
         angle,
         power,
         this.game.wind,
-        g
+        false,
+        (hit) => {
+          resolve({ hit, position: { x: startX, y: startY } });
+        },
+        this.game.currentPlayer
       );
+    });
+  }
 
+  animateTrajectory(
+    startX,
+    startY,
+    angle,
+    power,
+    wind,
+    isPreview = false,
+    onCollision = null,
+    playerIndex
+  ) {
+    const g = 0.0981;
+
+    const adjustedStartX = startX + this.gorillaWidth / 2;
+    const adjustedStartY = startY - this.gorillaHeight / 2;
+
+    const trajectory = computeTrajectory(
+      playerIndex,
+      adjustedStartX,
+      adjustedStartY,
+      angle,
+      power,
+      wind,
+      g
+    );
+
+    if (isPreview) {
+      // Draw the entire trajectory for preview
+      stroke(COLORS.TRAJECTORY);
+      noFill();
+      beginShape();
+      for (let point of trajectory) {
+        vertex(point.x, point.y);
+      }
+      endShape();
+    } else {
       let trajectoryIndex = 0;
-      let rotationAngle = 0; // Initialize rotation angle
-      let hit = false;
+      let rotationAngle = 0;
 
-      const animateThrow = () => {
+      const animateFrame = () => {
         background(220);
         this.drawSky();
         this.drawCityscape();
         this.drawGorillas();
 
-        if (trajectoryIndex < trajectory.length) {
+        // Draw planned trajectory if it's a preview
+        if (isPreview && trajectoryIndex < trajectory.length) {
+          this.drawPlannedTrajectoryPoint(trajectory[trajectoryIndex]);
+        }
+
+        if (trajectoryIndex < trajectory.length && !isPreview) {
           const position = trajectory[trajectoryIndex];
 
-          push(); // Save current drawing settings
-          translate(position.x, position.y); // Move the origin to the banana's current position
-          rotate(rotationAngle); // Rotate the drawing around the new origin
-          image(bananaImage, -bananaImage.width / 2, -bananaImage.height / 2); // Draw the banana centered around the new origin
-          pop(); // Restore drawing settings
+          push();
+          translate(position.x, position.y);
+          rotate(rotationAngle);
 
-          rotationAngle += radians(ROTATION_ANGLE); // Increment the rotation angle
+          // Draw the banana at the center of the rotation
+          image(
+            bananaImage,
+            -this.bananaWidth / 2,
+            -this.bananaHeight / 2,
+            this.bananaWidth,
+            this.bananaHeight
+          );
 
-          // Check for collisions
-          hit = this.game.checkCollision(position.x, position.y);
-          if (hit) {
-            this.showExplosion(position.x, position.y);
-            resolve({ hit, position });
-          } else {
-            trajectoryIndex++;
-            requestAnimationFrame(animateThrow);
+          pop();
+
+          rotationAngle += radians(ROTATION_ANGLE);
+
+          // Collision detection after the specified delay
+          if (frameCount > COLLISION_DETECTION_DELAY) {
+            let hit = this.game.checkCollision(position.x, position.y);
+            if (hit) {
+              if (hit.type === 'gorilla' && hit.player === playerIndex) {
+                // ignore the collision with the current player since it's a replay
+                // TODO fix this so instead of ignoring collisions from the current
+                // gorilla, it fixes the issue with immediate gorilla collisions
+              } else {
+                this.showExplosion(position.x, position.y);
+                if (onCollision) {
+                  onCollision(hit);
+                }
+                return; // Stop the animation loop upon collision
+              }
+            }
           }
-        } else {
-          resolve(false);
+
+          trajectoryIndex++;
+          frameCount++; // Increment frame counter
+          requestAnimationFrame(animateFrame);
+        } else if (!isPreview) {
+          // Handle end of trajectory without collision
+          if (onCollision) {
+            onCollision(null);
+          }
         }
       };
 
-      animateThrow();
-    });
+      animateFrame();
+    }
   }
 
-  animateBananaThrow(startX, startY, angle, power) {
-    // ... logic ...
+  getBananaCollisionPoint(position) {
+    return {
+      x: position.x + this.bananaWidth / 2,
+      y: position.y + this.bananaHeight / 2,
+    };
+  }
+
+  // Helper method to draw a single point of the planned trajectory
+  drawPlannedTrajectoryPoint(position) {
+    fill(COLORS.TRAJECTORY);
+    ellipse(position.x, position.y, 5);
+  }
+
+  animateBananaThrow(startX, startY, angle, power, playerIndex) {
+    this.animateTrajectory(
+      startX,
+      startY,
+      angle,
+      power,
+      this.game.wind,
+      false,
+      null,
+      playerIndex
+    );
+  }
+
+  animateReplay(lastTurnData) {
+    const { startX, startY, angle, power, playerIndex } = lastTurnData;
+
+    this.animateTrajectory(
+      startX,
+      startY,
+      angle,
+      power,
+      this.game.wind,
+      false,
+      (hit) => {
+        // Additional logic for after the replay
+      },
+      playerIndex
+    );
   }
 
   drawPlannedTrajectory(startX, startY, angle, power) {
     const g = 0.0981;
     let pulseIndex = 0;
     const trajectory = computeTrajectory(
-      this.game,
+      this.game.currentPlayer,
       startX,
       startY,
       angle,
@@ -267,18 +364,16 @@ class GorillasView {
     // Render the past hits
     image(this.pastHitsGraphics, 0, 0);
 
+    // Initialize trajectory preview
     const angle = parseFloat(document.getElementById('angle-slider').value);
     const power = parseFloat(document.getElementById('power-slider').value);
 
-    let imgWidth = IMAGE_WIDTHS.GORILLA;
-    let imgHeight =
-      (gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width) *
-      imgWidth;
+    const currentPlayer = this.game.currentPlayer;
+    const gorillaPosition = this.game.gorillas[currentPlayer];
 
-    // Adjust the starting coordinates to be the center of the gorilla
-    const startX = this.game.gorillas[this.game.currentPlayer].x;
-    const startY =
-      this.game.gorillas[this.game.currentPlayer].y - imgHeight / 2;
+    // Adjust for the center of the gorilla
+    const startX = gorillaPosition.x + this.gorillaWidth / 2;
+    const startY = gorillaPosition.y - this.gorillaHeight / 2;
 
     this.drawPlannedTrajectory(startX, startY, angle, power);
 
@@ -292,6 +387,32 @@ class GorillasView {
     this.maskGraphics.clear();
     this.cityGraphics.clear();
     this.pastHitsGraphics.clear();
+  }
+
+  notifyTurn() {
+    const notificationElement = document.getElementById(
+      'turn-notification'
+    );
+    notificationElement.classList.remove('hidden');
+    notificationElement.classList.add('visible');
+
+    const replayButton = document.getElementById('replay-last-turn');
+    if (!replayButton.onclick) {
+      replayButton.onclick = () => {
+        this.animateReplay(this.game.lastTurn);
+        // Hide notification after replay
+        notificationElement.classList.remove('visible');
+        notificationElement.classList.add('hidden');
+      };
+    }
+  }
+
+  hideNotifyTurn() {
+    const notificationElement = document.getElementById(
+      'turn-notification'
+    );
+    notificationElement.classList.remove('visible');
+    notificationElement.classList.add('hidden');
   }
 }
 
