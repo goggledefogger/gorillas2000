@@ -389,9 +389,9 @@ class GorillasView {
     this.pastHitsGraphics.clear();
   }
 
-  notifyOpponentTurn() {
+  notifyTurn() {
     const notificationElement = document.getElementById(
-      'opponent-turn-notification'
+      'turn-notification'
     );
     notificationElement.classList.remove('hidden');
     notificationElement.classList.add('visible');
@@ -405,6 +405,14 @@ class GorillasView {
         notificationElement.classList.add('hidden');
       };
     }
+  }
+
+  hideNotifyTurn() {
+    const notificationElement = document.getElementById(
+      'turn-notification'
+    );
+    notificationElement.classList.remove('visible');
+    notificationElement.classList.add('hidden');
   }
 }
 

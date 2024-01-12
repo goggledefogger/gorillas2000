@@ -22,6 +22,8 @@ class GorillasController {
     });
 
     throwButton.addEventListener('click', () => {
+      this.view.hideNotifyTurn();
+      this.game.initializeMeAsPlayer(this.game.currentPlayer);
       const angle = parseFloat(angleSlider.value);
       const power = parseFloat(powerSlider.value);
       this.executeThrow(angle, power);
