@@ -167,6 +167,7 @@ function setup() {
   game = new GorillasGame('Player 1', 'Player 2', 3);
   view = new GorillasView(game);
   controller = new GorillasController(game, view);
+  game.controller = controller
 
   controller.startGame();
   controller.startFirebaseListener('24');

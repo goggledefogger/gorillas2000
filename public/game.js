@@ -21,11 +21,13 @@ class GorillasGame {
   }
 
   initializeRound() {
+    this.winner = null;
     this.loadFromState(this.getGameState());
     this.resetGame(true);
   }
 
   initializeMeAsPlayer(playerIndex) {
+    this.winner = null;
     this.iamPlayer = playerIndex;
   }
 
@@ -163,7 +165,11 @@ class GorillasGame {
     this.totalWins[winningPlayer]++;
     console.log(`Player ${winningPlayer + 1} wins this round!`);
 
-    this.updateGameState(); // Update game state on Firebase
+    this.winner = winningPlayer
+
+    if (this.iamPlayer === winningPlayer) {
+      this.updateGameState(); // Update game state on Firebase
+    }
   }
 
   resetGame(bypassUpdatingDb) {
@@ -197,6 +203,8 @@ class GorillasGame {
       hitPosition: this.hitPosition || null,
       gameId: this.gameId,
       lastTurn: this.lastTurn || null,
+      winner: this.winner,
+      gameState: this.gameState,
     };
     return gameState;
   }
@@ -247,6 +255,20 @@ class GorillasGame {
 
   handleGameStateChange(gameState) {
     this.loadFromState(gameState);
+    let opponentJustWon = false;
+
+    if (
+      gameState.gameState === GAME_STATES.GAME_OVER &&
+      gameState.winner !== undefined &&
+      gameState.winner !== this.iamPlayer
+    ) {
+      opponentJustWon = true;
+    }
+
+    if (opponentJustWon) {
+      // Trigger the win popup on the other player's browser
+      this.controller.endGame(gameState.winner);
+    }
 
     let newCurrentPlayer = (this.currentPlayer + 1) % 2;
 
