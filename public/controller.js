@@ -159,10 +159,9 @@ class GorillasController {
 }
 
 function setup() {
-  const canvasContainer = document.getElementById('canvas-container');
-  let cnv = createCanvas(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
-  // remove cnv.center();
+  let cnv = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
   cnv.parent('canvas-container');
+  scaleCanvas(); // Apply initial scaling
   noLoop();
 
   game = new GorillasGame('Player 1', 'Player 2', 3);
@@ -173,3 +172,16 @@ function setup() {
   controller.startFirebaseListener('24');
 }
 
+function scaleCanvas() {
+  let scaleX = window.innerWidth / CANVAS_WIDTH;
+  let scaleY = window.innerHeight / CANVAS_HEIGHT;
+  let scale = Math.min(scaleX, scaleY);
+
+  let canvas = document.querySelector('canvas');
+  canvas.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  canvas.style.left = '50%';
+  canvas.style.top = '50%';
+  canvas.style.position = 'absolute';
+}
+
+window.addEventListener('resize', scaleCanvas);
