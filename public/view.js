@@ -8,7 +8,8 @@ function preload() {
   gorillaImageBeforeThrow = loadImage(
     'images/gorilla-before-throw.png',
     (img) => {
-      img.resize(40, 0); // Resize to a width of 40 and auto-adjust height to maintain aspect ratio
+      img.resize(IMAGE_WIDTHS.GORILLA, 0); // Resize width and auto-adjust height to maintain aspect ratio
+      this.gorillaHeight = img.height;
     }
   );
   cityTexture = loadImage('images/city-buildings.jpg');
@@ -405,6 +406,9 @@ class GorillasView {
         notificationElement.classList.add('hidden');
       };
     }
+
+    // click replay button
+    replayButton.click();
   }
 
   hideNotifyTurn() {

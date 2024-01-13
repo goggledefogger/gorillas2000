@@ -88,21 +88,33 @@ class GorillasGame {
   }
 
   positionGorillas() {
-    const gorilla1X = random(50, width / 2 - 150);
-    const gorilla2X = random(width / 2 + 100, width - 100);
+    // Use a proportion of the canvas width instead of random pixel values
+    const gorilla1X = CANVAS_WIDTH * random(0.0625, 0.4375); // 50 to half of the canvas width - 150
+    const gorilla2X = CANVAS_WIDTH * random(0.5625, 0.9375); // Half of the canvas width + 100 to canvas width - 100
+
+    // Calculate the building index based on the gorilla's X position
+    const buildingIndex1 = floor(gorilla1X / 50);
+    const buildingIndex2 = floor(gorilla2X / 50);
+
+    // Assuming the height of each building is stored in this.cityscape array
+    const gorilla1Y =
+      CANVAS_HEIGHT - this.cityscape[buildingIndex1];
+    const gorilla2Y =
+      CANVAS_HEIGHT - this.cityscape[buildingIndex2];
 
     const gorilla1Position = {
       x: gorilla1X,
-      y: height - this.cityscape[floor(gorilla1X / 50)],
+      y: gorilla1Y,
     };
 
     const gorilla2Position = {
       x: gorilla2X,
-      y: height - this.cityscape[floor(gorilla2X / 50)],
+      y: gorilla2Y,
     };
 
     return [gorilla1Position, gorilla2Position];
-  }
+}
+
 
   generateWind() {
     return random(-5, 5); // Random wind speed between -5 and 5
