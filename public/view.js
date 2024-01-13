@@ -408,7 +408,7 @@ class GorillasView {
     }
 
     // click replay button
-    replayButton.click();
+    // replayButton.click();
   }
 
   hideNotifyTurn() {
