@@ -14,50 +14,59 @@
     <!-- UI elements for the game -->
     <div id="menu">
       <!-- Scoreboard -->
-        <div id="scoreboard">
-          <div class="player-score">
-            <span class="player-label">Player 1:</span>
-            <span class="score" id="player1-score">0</span>
-          </div>
-          <button id="reset-button">RESET</button>
-          <button id="replay-button">Replay Last Turn</button>
-          <div class="player-score">
-            <span class="player-label">Player 2:</span>
-            <span class="score" id="player2-score">0</span>
-          </div>
+      <div id="scoreboard">
+        <div class="player-score">
+          <span class="player-label">Player 1:</span>
+          <span class="score" id="player1-score">0</span>
         </div>
-      </div>
-
-      <div id="main-content">
-        <div id="controls">
-          <label for="angle-slider">Angle:</label>
-          <input type="range" id="angle-slider" min="0" max="90" value="45">
-
-          <label for="power-slider">Power:</label>
-          <input type="range" id="power-slider" min="0" max="100" value="50">
-
-          <button id="throw-button">Throw</button>
-
-          <!-- Win Message Section -->
-          <div id="win-message" style="display: none;">
-            <h2 id="win-text"></h2>
-            <button id="continue-btn">Continue</button>
-          </div>
-
+        <button id="reset-button">Reset</button>
+        <button id="replay-button">Replay Last Turn</button>
+        <button id="music-button">Music</button>
+        <div class="player-score">
+          <span class="player-label">Player 2:</span>
+          <span class="score" id="player2-score">0</span>
         </div>
-
-
-
-        <!-- Canvas for p5.js rendering -->
-        <div id="canvas-container">
-          <div id="turn-notification" class="hidden">
-            <p>It's your turn!</p>
-            <button id="replay-last-turn">Replay Last Turn</button>
-          </div>
-        </div>
-
       </div>
     </div>
+
+    <div id="main-content">
+      <div class="main-game-image">
+        <img src="images/main-game-image.png" alt="Main Game Image" id="game-image">
+      </div>
+      <div id="controls">
+        <label for="angle-slider">Angle:</label>
+        <input type="range" id="angle-slider" min="0" max="90" value="45">
+
+        <label for="power-slider">Power:</label>
+        <input type="range" id="power-slider" min="0" max="100" value="50">
+
+        <button id="throw-button">Throw</button>
+
+        <!-- Win Message Section -->
+        <div id="win-message" style="display: none;">
+          <h2 id="win-text"></h2>
+          <button id="continue-btn">Continue</button>
+        </div>
+
+      </div>
+
+
+
+      <!-- Canvas for p5.js rendering -->
+      <div id="canvas-container">
+        <div id="turn-notification" class="hidden">
+          <p>It's your turn!</p>
+          <button id="replay-last-turn">Replay Last Turn</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <audio autoplay loop id="game-audio">
+    <source src="media/banana-blitz-audio.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 
   </div>
 
