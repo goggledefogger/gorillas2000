@@ -201,8 +201,10 @@ function setup() {
 }
 
 function scaleCanvas() {
-  let scaleX = window.innerWidth / CANVAS_WIDTH;
-  let scaleY = window.innerHeight / CANVAS_HEIGHT;
+  let scaleX =
+    document.getElementById('canvas-container').offsetWidth / CANVAS_WIDTH;
+  let scaleY =
+    document.getElementById('canvas-container').offsetHeight / CANVAS_HEIGHT;
   let scale = Math.min(scaleX, scaleY);
 
   let canvas = document.querySelector('canvas');
