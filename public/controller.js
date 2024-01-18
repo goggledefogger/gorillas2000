@@ -5,6 +5,7 @@ class GorillasController {
     this.game = game;
     this.view = view;
     this.setupEventListeners();
+    this.musicIsPlaying = false;
   }
 
   setupEventListeners() {
@@ -43,6 +44,32 @@ class GorillasController {
     document.getElementById('replay-button').addEventListener('click', () => {
       this.replayLastTurn();
     });
+
+    // add an event listener for anything outside of the #turn-notification div
+    document.addEventListener('click', (event) => {
+      if (
+        !event.target.closest('#turn-notification') &&
+        !event.target.closest('#music-button')
+      ) {
+        this.view.hideNotifyTurn();
+      }
+    });
+
+    document.getElementById('music-button').addEventListener('click', () => {
+      this.toggleMusic()
+    });
+  }
+
+  toggleMusic() {
+    if (!this.musicIsPlaying) {
+    document.getElementById('game-audio').play();
+    } else {
+      document.getElementById('game-audio').pause();
+    }
+
+    this.musicIsPlaying = !this.musicIsPlaying;
+    // toggle 'animated' css style on element
+    document.getElementById('music-button').classList.toggle('pulsing');
   }
 
   startFirebaseListener(gameId) {
@@ -167,14 +194,17 @@ function setup() {
   game = new GorillasGame('Player 1', 'Player 2', 3);
   view = new GorillasView(game);
   controller = new GorillasController(game, view);
+  game.controller = controller
 
   controller.startGame();
   controller.startFirebaseListener('24');
 }
 
 function scaleCanvas() {
-  let scaleX = window.innerWidth / CANVAS_WIDTH;
-  let scaleY = window.innerHeight / CANVAS_HEIGHT;
+  let scaleX =
+    document.getElementById('canvas-container').offsetWidth / CANVAS_WIDTH;
+  let scaleY =
+    document.getElementById('canvas-container').offsetHeight / CANVAS_HEIGHT;
   let scale = Math.min(scaleX, scaleY);
 
   let canvas = document.querySelector('canvas');
