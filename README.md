@@ -12,7 +12,7 @@ This project is a modern remake of the classic DOS game, Gorillas. Originally de
 **Goal:** The objective of the game is to hit the opponent's gorilla with a banana.
 
 **Controls:**
-- Adjust the angle and power using the provided sliders.
+- Adjust the angle and velocity using the provided sliders.
 - Click the "Throw" button to throw a banana.
 
 ## Installation and Running
