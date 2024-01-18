@@ -10,15 +10,17 @@ class GorillasController {
 
   setupEventListeners() {
     const angleSlider = document.getElementById('angle-slider');
-    const powerSlider = document.getElementById('power-slider');
+    const velocitySlider = document.getElementById('velocity-slider');
     const throwButton = document.getElementById('throw-button');
     const resetButton = document.getElementById('reset-button');
 
     angleSlider.addEventListener('input', () => {
+      this.view.hideNotifyTurn();
       this.updateView();
     });
 
-    powerSlider.addEventListener('input', () => {
+    velocitySlider.addEventListener('input', () => {
+      this.view.hideNotifyTurn();
       this.updateView();
     });
 
@@ -26,8 +28,8 @@ class GorillasController {
       this.view.hideNotifyTurn();
       this.game.initializeMeAsPlayer(this.game.currentPlayer);
       const angle = parseFloat(angleSlider.value);
-      const power = parseFloat(powerSlider.value);
-      this.executeThrow(angle, power);
+      const velocity = parseFloat(velocitySlider.value);
+      this.executeThrow(angle, velocity);
     });
 
     // Add event listener for the continue button to hide the message and start the next round
@@ -83,7 +85,7 @@ class GorillasController {
     this.updateView();
   }
 
-  async executeThrow(angle, power) {
+  async executeThrow(angle, velocity) {
     let startX = this.game.gorillas[this.game.currentPlayer].x;
     let startY = this.game.gorillas[this.game.currentPlayer].y;
 
@@ -92,7 +94,7 @@ class GorillasController {
       startX,
       startY,
       angle,
-      power
+      velocity
     );
 
     if (collisionResult) {
@@ -114,7 +116,7 @@ class GorillasController {
     }
 
     // Save turn data to Firebase
-    this.game.saveTurnData(angle, power, startX, startY, collisionResult);
+    this.game.saveTurnData(angle, velocity, startX, startY, collisionResult);
 
     this.updateView();
   }

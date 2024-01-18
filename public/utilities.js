@@ -1,4 +1,4 @@
-function computeTrajectory(currentPlayer, startX, startY, angle, power, wind, g) {
+function computeTrajectory(currentPlayer, startX, startY, angle, velocity, wind, g) {
   let trajectory = [];
   let time = 0;
   let xPos = startX;
@@ -9,10 +9,10 @@ function computeTrajectory(currentPlayer, startX, startY, angle, power, wind, g)
   let adjustedAngle = currentPlayer === 0 ? angle : 180 - angle;
   const radianAngle = radians(adjustedAngle);
 
-  const adjustedPower = adjustPower(power);
+  const adjustedVelocity = adjustVelocity(velocity);
 
-  const velocityX = adjustedPower * cos(radianAngle);
-  const velocityY = adjustedPower * sin(radianAngle);
+  const velocityX = adjustedVelocity * cos(radianAngle);
+  const velocityY = adjustedVelocity * sin(radianAngle);
 
   while (yPos < height) {
     xPos += (velocityX + wind) * TIME_INCREMENT;
@@ -27,8 +27,8 @@ function computeTrajectory(currentPlayer, startX, startY, angle, power, wind, g)
   return trajectory;
 }
 
-function adjustPower(power) {
-  const MIN_POWER = 1; // Minimum power value to avoid log(0)
+function adjustVelocity(velocity) {
+  const MIN_VELOCITY = 1; // Minimum velocity value to avoid log(0)
 
-  return Math.log(power + MIN_POWER) * POWER_SCALE;
+  return Math.log(velocity + MIN_VELOCITY) * VELOCITY_SCALE;
 }

@@ -136,13 +136,13 @@ class GorillasView {
       this.bananaHeight
     );
   }
-  async drawBananaTrajectory(startX, startY, angle, power) {
+  async drawBananaTrajectory(startX, startY, angle, velocity) {
     return new Promise((resolve) => {
       this.animateTrajectory(
         startX,
         startY,
         angle,
-        power,
+        velocity,
         this.game.wind,
         false,
         (hit) => {
@@ -157,7 +157,7 @@ class GorillasView {
     startX,
     startY,
     angle,
-    power,
+    velocity,
     wind,
     isPreview = false,
     onCollision = null,
@@ -173,7 +173,7 @@ class GorillasView {
       adjustedStartX,
       adjustedStartY,
       angle,
-      power,
+      velocity,
       wind,
       g
     );
@@ -268,12 +268,12 @@ class GorillasView {
     ellipse(position.x, position.y, 5);
   }
 
-  animateBananaThrow(startX, startY, angle, power, playerIndex) {
+  animateBananaThrow(startX, startY, angle, velocity, playerIndex) {
     this.animateTrajectory(
       startX,
       startY,
       angle,
-      power,
+      velocity,
       this.game.wind,
       false,
       null,
@@ -282,13 +282,13 @@ class GorillasView {
   }
 
   animateReplay(lastTurnData) {
-    const { startX, startY, angle, power, playerIndex } = lastTurnData;
+    const { startX, startY, angle, velocity, playerIndex } = lastTurnData;
 
     this.animateTrajectory(
       startX,
       startY,
       angle,
-      power,
+      velocity,
       this.game.wind,
       false,
       (hit) => {
@@ -298,7 +298,7 @@ class GorillasView {
     );
   }
 
-  drawPlannedTrajectory(startX, startY, angle, power) {
+  drawPlannedTrajectory(startX, startY, angle, velocity) {
     const g = 0.0981;
     let pulseIndex = 0;
     const trajectory = computeTrajectory(
@@ -306,7 +306,7 @@ class GorillasView {
       startX,
       startY,
       angle,
-      power,
+      velocity,
       this.game.wind,
       g
     );
@@ -367,7 +367,7 @@ class GorillasView {
 
     // Initialize trajectory preview
     const angle = parseFloat(document.getElementById('angle-slider').value);
-    const power = parseFloat(document.getElementById('power-slider').value);
+    const velocity = parseFloat(document.getElementById('velocity-slider').value);
 
     const currentPlayer = this.game.currentPlayer;
     const gorillaPosition = this.game.gorillas[currentPlayer];
@@ -376,7 +376,7 @@ class GorillasView {
     const startX = gorillaPosition.x + this.gorillaWidth / 2;
     const startY = gorillaPosition.y - this.gorillaHeight / 2;
 
-    this.drawPlannedTrajectory(startX, startY, angle, power);
+    this.drawPlannedTrajectory(startX, startY, angle, velocity);
 
     if (this.game.gameState === GAME_STATES.GAME_OVER) {
       fill(0, 0, 0, 127); // Semi-transparent black

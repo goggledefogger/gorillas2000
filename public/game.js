@@ -223,12 +223,12 @@ class GorillasGame {
     this.lastTurn = gameState.lastTurn;
   }
 
-  saveTurnData(angle, power, startX, startY, hitResult) {
+  saveTurnData(angle, velocity, startX, startY, hitResult) {
     let lastTurnPlayer = (this.currentPlayer + 1) % 2;
 
     this.lastTurn = {
       angle: angle,
-      power: power,
+      velocity: velocity,
       startX: startX,
       startY: startY,
       hitResult: hitResult, // Includes collision details if any
