@@ -367,9 +367,19 @@ class GorillasView {
 
     // Initialize trajectory preview
     const angle = parseFloat(document.getElementById('angle-slider').value);
-    const velocity = parseFloat(document.getElementById('velocity-slider').value);
+    const velocity = parseFloat(
+      document.getElementById('velocity-slider').value
+    );
 
     const currentPlayer = this.game.currentPlayer;
+    const previousTurnPlayer = this.game.lastTurn.playerIndex;
+    document
+      .getElementById(`player-${currentPlayer}-score`)
+      .classList.add('current-player');
+    document
+      .getElementById(`player-${previousTurnPlayer}-score`)
+      .classList.remove('current-player');
+
     const gorillaPosition = this.game.gorillas[currentPlayer];
 
     // Adjust for the center of the gorilla
@@ -391,9 +401,7 @@ class GorillasView {
   }
 
   notifyTurn() {
-    const notificationElement = document.getElementById(
-      'turn-notification'
-    );
+    const notificationElement = document.getElementById('turn-notification');
     notificationElement.classList.remove('hidden');
     notificationElement.classList.add('visible');
 
@@ -412,9 +420,7 @@ class GorillasView {
   }
 
   hideNotifyTurn() {
-    const notificationElement = document.getElementById(
-      'turn-notification'
-    );
+    const notificationElement = document.getElementById('turn-notification');
     notificationElement.classList.remove('visible');
     notificationElement.classList.add('hidden');
   }
