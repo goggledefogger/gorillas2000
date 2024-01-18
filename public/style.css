@@ -100,6 +100,7 @@ body {
 #main-content {
   display: flex;
   flex-direction: row;
+  margin: auto;
 }
 
 #controls {
@@ -113,6 +114,7 @@ body {
   /* Allow #controls to grow and take up all available space */
   width: 100%;
   /* Allow controls to size based on content */
+  margin: auto;
 }
 
 #controls label,
@@ -239,9 +241,9 @@ canvas {
 .main-game-image {
   position: fixed;
   /* Fix position relative to the viewport */
-  right: 10px;
+  left: 10px;
   /* Distance from the right of the viewport */
-  bottom: 10px;
+  top: 10px;
   /* Distance from the bottom of the viewport */
   width: 20vw;
   /* Width relative to the viewport width */
@@ -316,6 +318,20 @@ button.pulsing {
     width: 100%;
   }
 
+  #scoreboard {
+    width: 100%;
+    /* Adjusted for better layout flow */
+    margin: 0 auto 20px;
+    /* Add vertical spacing between canvas and controls */
+  }
+
+  #scoreboard .action-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transform: translateY(30px);
+  }
+
   #canvas-container {
     width: 100%;
     min-height: 50vh;
@@ -332,10 +348,11 @@ button.pulsing {
   .main-game-image {
     width: 30vw;
     /* Smaller width on smaller screens */
-    right: 5px;
+    left: 5px;
     /* Less distance from the right */
     bottom: 5px;
     /* Less distance from the bottom */
+    top: inherit
   }
 }
 
