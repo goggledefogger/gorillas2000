@@ -247,7 +247,7 @@ canvas {
   /* Distance from the bottom of the viewport */
   width: 20vw;
   /* Width relative to the viewport width */
-  max-width: 200px;
+  max-width: 175px;
   /* Maximum width to ensure it doesn't get too large */
   min-width: 100px;
   /* Minimum width to ensure visibility */
@@ -319,41 +319,92 @@ button.pulsing {
   }
 
   #scoreboard {
+    flex-direction: row;
+    /* Align player scores in a row */
+    justify-content: space-between;
+    /* Space between player scores */
+    padding: 0 10px;
+    /* Padding on sides */;
     width: 100%;
-    /* Adjusted for better layout flow */
-    margin: 0 auto 20px;
-    /* Add vertical spacing between canvas and controls */
   }
 
-  #scoreboard .action-buttons {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    transform: translateY(30px);
+  .player-score {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .player-score:first-child {
+    justify-content: flex-start;
+    /* Align Player 1 to the left */
+    text-align: left;
+    /* Align the text of Player 1 to the left */
+  }
+
+  .player-score:last-child {
+    justify-content: flex-end;
+    /* Align Player 2 to the right */
+    text-align: right;
+    /* Align the text of Player 2 to the right */
+  }
+
+  #menu {
+    width: 100%;
+    /* Full width */
+    box-sizing: border-box;
+    /* Adjust padding to ensure content fits */
+    position: relative;
+    /* Position relative for absolute children */
+    text-align: center;
+    /* Center the text */
+    z-index: 2;
+    /* Ensure it's above other content */
+  }
+
+  .main-game-image {
+    position: absolute;
+    left: 50%;
+    top: 5px;
+    /* Adjusted to not overlap the top edge of the screen */
+    transform: translateX(-50%);
+    /* Adjusted for a better fit */
+    min-width: 100px;
+    /* Minimum width */
+    max-width: 200px;
+    /* Maximum width */
+    z-index: 3;
+  }
+
+
+  .action-buttons {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    justify-content: center;
+    background-color: #007BFF;
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
   }
 
   #canvas-container {
     width: 100%;
-    min-height: 50vh;
-    /* Ensure a minimum height for canvas on mobile */
-    height: auto;
-    padding-bottom: 50%;
-    /* Adjust based on your content and desired aspect ratio */
+    padding-bottom: 75%;
+    /* 4:3 aspect ratio */
+    position: relative;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 
   #controls {
     max-width: 100%;
   }
 
-  .main-game-image {
-    width: 30vw;
-    /* Smaller width on smaller screens */
-    left: 5px;
-    /* Less distance from the right */
-    bottom: 5px;
-    /* Less distance from the bottom */
-    top: inherit
-  }
 }
 
 @media screen and (min-width: 1025px) {
