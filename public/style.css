@@ -86,6 +86,35 @@ body {
   /* Slightly larger font size for emphasis */
 }
 
+.current-player * {
+  font-weight: bold;
+  /* Make the label text bolder */
+  color: #FFD700;
+  /* A gold color to highlight the current player */
+  text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.7);
+  /* A subtle glow effect */
+  transition: all 0.5s ease;
+  /* Smooth transition for the effect */
+  animation: pulse 2s infinite;
+}
+
+/* Optional: a subtle pulsing animation to draw more attention */
+@keyframes pulse {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+  }
+
+  50% {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 1);
+  }
+
+  100% {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+  }
+}
+
+
+
 #menu {
   display: flex;
   justify-content: center;
@@ -324,7 +353,8 @@ button.pulsing {
     justify-content: space-between;
     /* Space between player scores */
     padding: 0 10px;
-    /* Padding on sides */;
+    /* Padding on sides */
+    ;
     width: 100%;
   }
 
