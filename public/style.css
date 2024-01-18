@@ -263,6 +263,12 @@ canvas {
   /* Hide the control by default */
 }
 
+button.pulsing {
+  animation: pulseColorChange 2s infinite ease-in-out;
+  /* Adjust timing as needed */
+  color: black
+}
+
 
 /* Responsive Font Sizes */
 @media screen and (max-width: 767px) {
@@ -355,5 +361,25 @@ canvas {
     gap: 10px;
     padding-right: 20px;
     max-width: 20vw;
+  }
+}
+
+@keyframes pulseColorChange {
+  0% {
+    transform: scale(1);
+    background-color: #ff99aa;
+    /* Soft pink */
+  }
+
+  50% {
+    transform: scale(1.1);
+    background-color: #aa99ff;
+    /* Mild purple */
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: #99ffaa;
+    /* Gentle green */
   }
 }

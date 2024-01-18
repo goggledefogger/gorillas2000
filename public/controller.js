@@ -5,6 +5,7 @@ class GorillasController {
     this.game = game;
     this.view = view;
     this.setupEventListeners();
+    this.musicIsPlaying = false;
   }
 
   setupEventListeners() {
@@ -55,8 +56,20 @@ class GorillasController {
     });
 
     document.getElementById('music-button').addEventListener('click', () => {
-      document.getElementById('game-audio').play();
+      this.toggleMusic()
     });
+  }
+
+  toggleMusic() {
+    if (!this.musicIsPlaying) {
+    document.getElementById('game-audio').play();
+    } else {
+      document.getElementById('game-audio').pause();
+    }
+
+    this.musicIsPlaying = !this.musicIsPlaying;
+    // toggle 'animated' css style on element
+    document.getElementById('music-button').classList.toggle('pulsing');
   }
 
   startFirebaseListener(gameId) {
