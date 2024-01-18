@@ -43,6 +43,20 @@ class GorillasController {
     document.getElementById('replay-button').addEventListener('click', () => {
       this.replayLastTurn();
     });
+
+    // add an event listener for anything outside of the #turn-notification div
+    document.addEventListener('click', (event) => {
+      if (
+        !event.target.closest('#turn-notification') &&
+        !event.target.closest('#music-button')
+      ) {
+        this.view.hideNotifyTurn();
+      }
+    });
+
+    document.getElementById('music-button').addEventListener('click', () => {
+      document.getElementById('game-audio').play();
+    });
   }
 
   startFirebaseListener(gameId) {
