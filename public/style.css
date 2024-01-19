@@ -166,8 +166,6 @@ body {
   }
 }
 
-
-
 #menu {
   display: flex;
   justify-content: center;
@@ -177,6 +175,10 @@ body {
   position: fixed;
   top: 0;
   z-index: 2;
+}
+
+.action-buttons {
+  display: flex;
 }
 
 #main-content {
