@@ -398,8 +398,10 @@ class GorillasView {
 
   renderScoreboard(currentPlayer, previousTurnPlayer) {
     // update the player names
-    document.querySelector('#player-1 .player-label').textContent = this.game.player1;
-    document.querySelector('#player-2 .player-label').textContent = this.game.player2;
+    document.querySelector('#player-1 .player-label').textContent =
+      this.game.player1;
+    document.querySelector('#player-2 .player-label').textContent =
+      this.game.player2;
 
     document
       .getElementById(`player-${currentPlayer + 1}`)
@@ -407,13 +409,14 @@ class GorillasView {
     document
       .getElementById(`player-${previousTurnPlayer + 1}`)
       .classList.remove('current-player');
-
   }
 
   nextGame() {
     this.maskGraphics.clear();
     this.cityGraphics.clear();
     this.pastHitsGraphics.clear();
+    this.hideGameEnd();
+    this.render();
   }
 
   notifyTurn() {
@@ -455,6 +458,18 @@ class GorillasView {
   // Update the velocity value display
   updateVelocityValue(value) {
     document.getElementById('velocity-value').textContent = value;
+  }
+
+  showGameEnd() {
+    let winTextElement = document.getElementById('win-text');
+    // Handle gorilla collision
+    winTextElement.textContent = `${this.game.getCurrentPlayerName()} wins this round!`;
+    // Show the win message
+    document.getElementById('win-message').style.display = 'block';
+  }
+
+  hideGameEnd() {
+    document.getElementById('win-message').style.display = 'none';
   }
 }
 

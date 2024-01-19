@@ -38,7 +38,6 @@ class GorillasController {
 
     // Add event listener for the continue button to hide the message and start the next round
     document.getElementById('continue-btn').addEventListener('click', () => {
-      document.getElementById('win-message').style.display = 'none';
       this.startGame();
     });
 
@@ -143,14 +142,8 @@ class GorillasController {
   }
 
   endGame(winningPlayer) {
-    let winTextElement = document.getElementById('win-text');
-    // Handle gorilla collision
-    winTextElement.textContent = `${
-      this.game.getCurrentPlayerName()
-    } wins this round!`;
-    // Show the win message
-    document.getElementById('win-message').style.display = 'block';
     this.game.endGame(winningPlayer);
+    this.view.showGameEnd();
     this.updateView();
   }
 
