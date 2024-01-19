@@ -493,6 +493,8 @@ class Explosion {
       this.transparency -= 5; // Decrease the transparency to fade the circle
       if (this.transparency <= 0) {
         this.finished = true; // The explosion is finished when it's fully transparent
+      } else {
+        view.render();
       }
     }
   }
