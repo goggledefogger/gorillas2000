@@ -424,6 +424,16 @@ class GorillasView {
     notificationElement.classList.remove('visible');
     notificationElement.classList.add('hidden');
   }
+
+  // Update the angle value display
+  updateAngleValue(value) {
+    document.getElementById('angle-value').textContent = value;
+  }
+
+  // Update the velocity value display
+  updateVelocityValue(value) {
+    document.getElementById('velocity-value').textContent = value;
+  }
 }
 
 class Explosion {

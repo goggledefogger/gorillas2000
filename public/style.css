@@ -146,6 +146,13 @@ body {
   margin: auto;
 }
 
+.slider-label-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 #controls label,
 #controls input[type="range"] {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -156,8 +163,6 @@ body {
 #controls label,
 #controls button,
 #controls input {
-  margin-bottom: 10px;
-  /* Add some spacing between controls */
   padding: 5px;
   /* Padding for better touch feel */
   border-radius: 5px;
