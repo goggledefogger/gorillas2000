@@ -192,12 +192,13 @@ class GorillasController {
     const playerChooserModal = document.getElementById('player-chooser-modal');
 
     window.getInitialGameData(this.game.gameId, (data) => {
-      let player1Name = 'Player 1';
-      let player2Name = 'Player 2';
+      // if there's already data, no need to set the player names
       if (data) {
-        player1Name = data.player1;
-        player2Name = data.player2;
+        return;
       }
+
+      const player1Name = 'JoelSpaz';
+      const player2Name = 'DannyChamp';
 
       document.getElementById('player1-name-input').value = player1Name;
       document.getElementById('player2-name-input').value = player2Name;
