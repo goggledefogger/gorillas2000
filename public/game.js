@@ -276,9 +276,20 @@ class GorillasGame {
       this.controller.endGame(gameState.winner);
     }
 
+    let isFirstTurn = false;
+
+    if (!gameState.lastTurn) {
+      // this the first turn of a new game
+      isFirstTurn = true;
+    }
+
     let newCurrentPlayer = (this.currentPlayer + 1) % 2;
 
-    if (this.isNewTurn(gameState) && newCurrentPlayer !== this.iamPlayer) {
+    if (
+      this.isNewTurn(gameState) &&
+      newCurrentPlayer !== this.iamPlayer &&
+      !isFirstTurn
+    ) {
       // show an alert that the opponent
       // did another turn and now they can watch the replay
       this.view.notifyTurn();
