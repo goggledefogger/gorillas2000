@@ -187,6 +187,30 @@ class GorillasController {
       });
     });
   }
+
+  showPlayerChooser() {
+    const playerChooserModal = document.getElementById('player-chooser-modal');
+
+    window.getInitialGameData(this.game.gameId, (data) => {
+      if (data) {
+        const player1Name = data.player1;
+        const player2Name = data.player2;
+
+        document.getElementById('player1-name-input').value = player1Name;
+        document.getElementById('player2-name-input').value = player2Name;
+        
+        playerChooserModal.classList.remove('hidden');
+      }
+    });
+
+    document.getElementById('start-game-btn').addEventListener('click', () => {
+      const player1Name = document.getElementById('player1-name-input').value;
+      const player2Name = document.getElementById('player2-name-input').value;
+      this.game.setPlayerNames(player1Name, player2Name);
+      playerChooserModal.classList.add('hidden');
+      this.updateView(); // Reflect the new names
+    });
+  }
 }
 
 function setup() {
@@ -196,12 +220,15 @@ function setup() {
   noLoop();
 
   game = new GorillasGame('Player 1', 'Player 2', 3);
+
   view = new GorillasView(game);
   controller = new GorillasController(game, view);
   game.controller = controller
 
   controller.startGame();
   controller.startFirebaseListener('24');
+
+  controller.showPlayerChooser();
 }
 
 function scaleCanvas() {

@@ -373,12 +373,7 @@ class GorillasView {
 
     const currentPlayer = this.game.currentPlayer;
     const previousTurnPlayer = this.game.lastTurn.playerIndex;
-    document
-      .getElementById(`player-${currentPlayer}-score`)
-      .classList.add('current-player');
-    document
-      .getElementById(`player-${previousTurnPlayer}-score`)
-      .classList.remove('current-player');
+    this.renderScoreboard(currentPlayer, previousTurnPlayer);
 
     const gorillaPosition = this.game.gorillas[currentPlayer];
 
@@ -392,6 +387,20 @@ class GorillasView {
       fill(0, 0, 0, 127); // Semi-transparent black
       rect(0, 0, width, height);
     }
+  }
+
+  renderScoreboard(currentPlayer, previousTurnPlayer) {
+    // update the player names
+    document.querySelector('#player-1 .player-label').textContent = this.game.player1;
+    document.querySelector('#player-2 .player-label').textContent = this.game.player2;
+
+    document
+      .getElementById(`player${currentPlayer + 1}-score`)
+      .classList.add('current-player');
+    document
+      .getElementById(`player${previousTurnPlayer + 1}-score`)
+      .classList.remove('current-player');
+
   }
 
   nextGame() {
