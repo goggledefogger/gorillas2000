@@ -395,10 +395,10 @@ class GorillasView {
     document.querySelector('#player-2 .player-label').textContent = this.game.player2;
 
     document
-      .getElementById(`player${currentPlayer + 1}-score`)
+      .getElementById(`player-${currentPlayer + 1}`)
       .classList.add('current-player');
     document
-      .getElementById(`player${previousTurnPlayer + 1}-score`)
+      .getElementById(`player-${previousTurnPlayer + 1}`)
       .classList.remove('current-player');
 
   }
