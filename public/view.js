@@ -1,39 +1,49 @@
 let bananaImage;
-let cityTexture;
+let gorillaImageBeforeThrow;
+let originalCityTexture; // Store the unaltered city texture
+let skyTexture;
 
 function preload() {
   bananaImage = loadImage('images/banana.png', (img) => {
-    img.resize(IMAGE_WIDTHS.BANANA, 0); // Resize using the new constant
+    img.resize(IMAGE_WIDTHS.BANANA, 0);
   });
-  gorillaImageBeforeThrow = loadImage(
-    'images/gorilla-before-throw.png',
-    (img) => {
-      img.resize(IMAGE_WIDTHS.GORILLA, 0); // Resize width and auto-adjust height to maintain aspect ratio
-      this.gorillaHeight = img.height;
-    }
-  );
-  cityTexture = loadImage('images/city-buildings.jpg');
+
+  gorillaImageBeforeThrow = loadImage('images/gorilla-before-throw.png');
+
+  cityTexture = loadImage('images/city-buildings.jpg', (img) => {
+    originalCityTexture = img.get();
+  });
+
   skyTexture = loadImage('images/sky.jpg');
 }
+
 class GorillasView {
   constructor(game) {
     this.game = game;
     game.view = this;
+
+    // Define the textures as properties of the class
+    this.bananaImage = bananaImage;
+    this.gorillaImageBeforeThrow = gorillaImageBeforeThrow;
+    this.originalCityTexture = originalCityTexture;
+    this.skyTexture = skyTexture;
+
     this.maskGraphics = createGraphics(width, height);
     this.cityGraphics = createGraphics(width, height);
     this.pastHitsGraphics = createGraphics(width, height);
     this.explosions = [];
-    this.startAnimationLoop();
 
-    // Precompute aspect ratios and dimensions
-    this.gorillaAspectRatio =
-      gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width;
+    // Removed 'this' as it's not the correct context in preload
     this.gorillaWidth = IMAGE_WIDTHS.GORILLA;
-    this.gorillaHeight = this.gorillaAspectRatio * this.gorillaWidth;
+    this.gorillaHeight =
+      (gorillaImageBeforeThrow.height / gorillaImageBeforeThrow.width) *
+      this.gorillaWidth;
 
-    this.bananaAspectRatio = bananaImage.height / bananaImage.width;
     this.bananaWidth = IMAGE_WIDTHS.BANANA;
-    this.bananaHeight = this.bananaAspectRatio * this.bananaWidth;
+    this.bananaHeight =
+      (bananaImage.height / bananaImage.width) * this.bananaWidth;
+
+    this.startAnimationLoop();
   }
 
   startAnimationLoop() {
@@ -53,21 +63,23 @@ class GorillasView {
   }
 
   drawCityscape() {
-    this.drawBuildings();
-    this.applyCityTexture();
-    this.drawBuildingOutlines();
+    this.createBuildingMask(); // Recreate the building mask for new building heights
+    this.applyCityTexture(); // Apply the new mask and texture
+    this.drawBuildingOutlines(); // Draw the outlines over the textured buildings
   }
 
-  drawBuildings() {
-    this.maskGraphics.clear(); // Clear the previous mask
-    this.maskGraphics.fill(255); // White color for the mask
+  createBuildingMask() {
+    // Always start with a fresh mask
+    this.maskGraphics = createGraphics(width, height);
+    this.maskGraphics.fill(255); // Use white fill to create the mask
     this.maskGraphics.noStroke();
 
+    // Create the mask based on current building heights
     this.game.cityscape.forEach((buildingHeight, i) => {
       this.maskGraphics.rect(
-        i * 50,
+        i * BUILDING_WIDTH,
         height - buildingHeight,
-        50,
+        BUILDING_WIDTH,
         buildingHeight
       );
     });
@@ -79,9 +91,9 @@ class GorillasView {
     noFill();
     this.game.cityscape.forEach((buildingHeight, i) => {
       const [x1, y1, x2, y2] = [
-        i * 50,
+        i * BUILDING_WIDTH,
         height,
-        (i + 1) * 50,
+        (i + 1) * BUILDING_WIDTH,
         height - buildingHeight,
       ];
       beginShape();
@@ -95,24 +107,16 @@ class GorillasView {
 
   applyCityTexture() {
     this.cityGraphics.clear();
-    cityTexture.mask(this.maskGraphics); // Apply the updated mask
-    this.cityGraphics.image(cityTexture, 0, 0, width, height);
-    image(this.cityGraphics, 0, 0, width, height);
-  }
 
-  drawBuildingOutlines() {
-    stroke(0);
-    strokeWeight(3);
-    noFill();
-    for (let i = 0; i < this.game.cityscape.length; i++) {
-      let buildingHeight = this.game.cityscape[i];
-      beginShape();
-      vertex(i * 50, height);
-      vertex(i * 50, height - buildingHeight);
-      vertex((i + 1) * 50, height - buildingHeight);
-      vertex((i + 1) * 50, height);
-      endShape(CLOSE);
-    }
+    // Make a copy of the original city texture to apply the mask to
+    let maskedTexture = originalCityTexture.get(); // .get() creates a copy of the image
+    maskedTexture.mask(this.maskGraphics); // Apply the mask to the copy
+
+    // Draw the masked texture onto the city graphics
+    this.cityGraphics.image(maskedTexture, 0, 0, width, height);
+
+    // Draw the city graphics onto the main canvas
+    image(this.cityGraphics, 0, 0);
   }
 
   drawGorillas() {

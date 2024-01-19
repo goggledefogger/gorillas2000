@@ -25,4 +25,6 @@ const IMAGE_WIDTHS = {
   BANANA: 30,
 };
 
+const BUILDING_WIDTH = 50;
+
 const COLLISION_DETECTION_DELAY = 5;
