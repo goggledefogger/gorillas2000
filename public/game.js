@@ -284,4 +284,12 @@ class GorillasGame {
       this.view.notifyTurn();
     }
   }
+
+  getCurrentPlayerName() {
+    return this.currentPlayer === 0 ? this.player1 : this.player2;
+  }
+
+  getLastPlayerName() {
+    return this.currentPlayer === 0 ? this.player2 : this.player1;
+  }
 }
