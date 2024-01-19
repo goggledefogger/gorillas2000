@@ -36,10 +36,15 @@
         <img src="images/main-game-image.png" alt="Main Game Image" id="game-image">
       </div>
       <div id="controls">
-        <label for="angle-slider">Angle:</label>
+        <div class="slider-label-container">
+          <label for="angle-slider">Angle:</label>
+          <span id="angle-value">45</span>
+        </div>
         <input type="range" id="angle-slider" min="0" max="90" value="45">
-
-        <label for="velocity-slider">Velocity:</label>
+        <div class="slider-label-container">
+          <label for="velocity-slider">Velocity:</label>
+          <span id="velocity-value">50</span>
+        </div>
         <input type="range" id="velocity-slider" min="0" max="100" value="50">
 
         <button id="throw-button">Throw</button>

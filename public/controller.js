@@ -16,11 +16,13 @@ class GorillasController {
 
     angleSlider.addEventListener('input', () => {
       this.view.hideNotifyTurn();
+      this.view.updateAngleValue(angleSlider.value);
       this.updateView();
     });
 
     velocitySlider.addEventListener('input', () => {
       this.view.hideNotifyTurn();
+      this.view.updateVelocityValue(velocitySlider.value);
       this.updateView();
     });
 
