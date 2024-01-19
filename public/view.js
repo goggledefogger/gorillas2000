@@ -411,10 +411,16 @@ class GorillasView {
 
   notifyTurn() {
     const notificationElement = document.getElementById('turn-notification');
+    const replayButton = document.getElementById('replay-last-turn');
+
+    const currentPlayerName = this.game.getCurrentPlayerName();
+    const lastTurnPlayerName = this.game.getLastPlayerName();
+
+    replayButton.textContent = `Replay ${currentPlayerName}'s turn`;
+
     notificationElement.classList.remove('hidden');
     notificationElement.classList.add('visible');
 
-    const replayButton = document.getElementById('replay-last-turn');
     if (!replayButton.onclick) {
       replayButton.onclick = () => {
         this.animateReplay(this.game.lastTurn);
