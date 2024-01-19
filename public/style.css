@@ -29,6 +29,59 @@ body {
   transition: opacity 0.5s ease-in-out;
 }
 
+/* The Modal (background) */
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  max-width: 500px; /* Maximum width */
+}
+
+/* The Close Button (x) - Optional */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Input fields */
+.modal input[type="text"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Start Game Button */
+.modal
+
+
 #game-wrapper {
   display: flex;
   align-items: center;
@@ -113,8 +166,6 @@ body {
   }
 }
 
-
-
 #menu {
   display: flex;
   justify-content: center;
@@ -124,6 +175,10 @@ body {
   position: fixed;
   top: 0;
   z-index: 2;
+}
+
+.action-buttons {
+  display: flex;
 }
 
 #main-content {
@@ -146,18 +201,17 @@ body {
   margin: auto;
 }
 
-#controls label,
-#controls input[type="range"] {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  /* Subtle shadow for inputs */
+.slider-label-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Controls Styling */
 #controls label,
 #controls button,
 #controls input {
-  margin-bottom: 10px;
-  /* Add some spacing between controls */
   padding: 5px;
   /* Padding for better touch feel */
   border-radius: 5px;
