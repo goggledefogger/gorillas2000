@@ -100,20 +100,25 @@ class GorillasController {
     );
 
     if (collisionResult) {
-      switch (collisionResult.hit.type) {
-        case 'gorilla':
-          const winningPlayer = 1 - collisionResult.hit.player;
-          this.endGame(winningPlayer);
-          break;
-        case 'building':
-          // Handle building collision
-          console.log(`Hit a building at index ${collisionResult.hit.index}`);
-          this.game.switchPlayer();
-          break;
-        default:
-          // No collision
-          this.game.switchPlayer();
-          break;
+      if (!collisionResult.hit) {
+        // No collision, went offscreen
+        this.game.switchPlayer();
+      } else {
+        switch (collisionResult.hit.type) {
+          case 'gorilla':
+            const winningPlayer = 1 - collisionResult.hit.player;
+            this.endGame(winningPlayer);
+            break;
+          case 'building':
+            // Handle building collision
+            console.log(`Hit a building at index ${collisionResult.hit.index}`);
+            this.game.switchPlayer();
+            break;
+          default:
+            // No collision
+            this.game.switchPlayer();
+            break;
+        }
       }
     }
 
@@ -202,7 +207,7 @@ class GorillasController {
 
       document.getElementById('player1-name-input').value = player1Name;
       document.getElementById('player2-name-input').value = player2Name;
-      
+
       playerChooserModal.classList.remove('hidden');
     });
 
