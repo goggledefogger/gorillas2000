@@ -1,5 +1,7 @@
 let game, view, controller;
 
+GAME_ID = 24;
+
 class GorillasController {
   constructor(game, view) {
     this.game = game;
@@ -41,7 +43,9 @@ class GorillasController {
     });
 
     resetButton.addEventListener('click', () => {
-      this.game.resetGame();
+      this.showPlayerChooser();
+      this.clearGameData(GAME_ID);
+      this.game.resetGame(true);
     });
 
     // Event listener for the replay button
@@ -62,6 +66,10 @@ class GorillasController {
     document.getElementById('music-button').addEventListener('click', () => {
       this.toggleMusic()
     });
+  }
+
+  clearGameData(gameId) {
+    window.deleteFromDB('games/' + gameId);
   }
 
   toggleMusic() {
@@ -166,9 +174,8 @@ class GorillasController {
   }
 
   async replayLastTurn() {
-    const gameId = 24;
     try {
-      const lastTurnData = await this.getLastTurnData(gameId);
+      const lastTurnData = await this.getLastTurnData(GAME_ID);
 
       if (lastTurnData) {
         this.view.animateReplay(lastTurnData);
