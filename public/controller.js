@@ -192,15 +192,17 @@ class GorillasController {
     const playerChooserModal = document.getElementById('player-chooser-modal');
 
     window.getInitialGameData(this.game.gameId, (data) => {
+      let player1Name = 'Player 1';
+      let player2Name = 'Player 2';
       if (data) {
-        const player1Name = data.player1;
-        const player2Name = data.player2;
-
-        document.getElementById('player1-name-input').value = player1Name;
-        document.getElementById('player2-name-input').value = player2Name;
-        
-        playerChooserModal.classList.remove('hidden');
+        player1Name = data.player1;
+        player2Name = data.player2;
       }
+
+      document.getElementById('player1-name-input').value = player1Name;
+      document.getElementById('player2-name-input').value = player2Name;
+      
+      playerChooserModal.classList.remove('hidden');
     });
 
     document.getElementById('start-game-btn').addEventListener('click', () => {

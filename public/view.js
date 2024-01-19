@@ -372,7 +372,7 @@ class GorillasView {
     );
 
     const currentPlayer = this.game.currentPlayer;
-    const previousTurnPlayer = this.game.lastTurn.playerIndex;
+    const previousTurnPlayer = (currentPlayer + 1) % 2;
     this.renderScoreboard(currentPlayer, previousTurnPlayer);
 
     const gorillaPosition = this.game.gorillas[currentPlayer];
