@@ -16,8 +16,8 @@
     <div id="menu">
       <!-- Scoreboard -->
       <div id="scoreboard">
-        <div class="player-score" id="player-0-score">
-          <span class="player-label">Player 1:</span>
+        <div class="player-score" id="player-1">
+          <span class="player-label"></span>
           <span class="score" id="player1-score">0</span>
         </div>
         <div class="action-buttons">
@@ -25,8 +25,8 @@
           <button id="replay-button">Replay Last Turn</button>
           <button id="music-button">Music</button>
         </div>
-        <div class="player-score" id="player-1-score">
-          <span class="player-label">Player 2:</span>
+        <div class="player-score" id="player-2">
+          <span class="player-label"></span>
           <span class="score" id="player2-score">0</span>
         </div>
       </div>
@@ -37,10 +37,15 @@
         <img src="images/main-game-image.png" alt="Main Game Image" id="game-image">
       </div>
       <div id="controls">
-        <label for="angle-slider">Angle:</label>
+        <div class="slider-label-container">
+          <label for="angle-slider">Angle:</label>
+          <span id="angle-value">45</span>
+        </div>
         <input type="range" id="angle-slider" min="0" max="90" value="45">
-
-        <label for="velocity-slider">Velocity:</label>
+        <div class="slider-label-container">
+          <label for="velocity-slider">Velocity:</label>
+          <span id="velocity-value">50</span>
+        </div>
         <input type="range" id="velocity-slider" min="0" max="100" value="50">
 
         <button id="throw-button">Throw</button>
@@ -53,8 +58,6 @@
 
       </div>
 
-
-
       <!-- Canvas for p5.js rendering -->
       <div id="canvas-container">
         <div id="turn-notification" class="hidden">
@@ -65,6 +68,16 @@
 
     </div>
   </div>
+
+  <div id="player-chooser-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Choose Your Names</h2>
+      <input id="player1-name-input" placeholder="Player 1" />
+      <input id="player2-name-input" placeholder="Player 2" />
+      <button id="start-game-btn">Start Game</button>
+    </div>
+  </div>
+  
 
   <audio autoplay loop id="game-audio">
     <source src="media/banana-blitz-audio.mp3" type="audio/mpeg">

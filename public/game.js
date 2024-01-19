@@ -26,6 +26,12 @@ class GorillasGame {
     this.resetGame(true);
   }
 
+  setPlayerNames(player1Name, player2Name) {
+    this.player1 = player1Name;
+    this.player2 = player2Name;
+    this.updateGameState();
+  }
+
   initializeMeAsPlayer(playerIndex) {
     this.winner = null;
     this.iamPlayer = playerIndex;
