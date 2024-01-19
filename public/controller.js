@@ -66,6 +66,12 @@ class GorillasController {
     document.getElementById('music-button').addEventListener('click', () => {
       this.toggleMusic()
     });
+
+    // add an event listener to clicking on the main game image
+    document.getElementById('game-image').addEventListener('click', () => {
+      this.view.toggleTrajectory();
+    });
+
   }
 
   clearGameData(gameId) {
@@ -139,8 +145,8 @@ class GorillasController {
   endGame(winningPlayer) {
     let winTextElement = document.getElementById('win-text');
     // Handle gorilla collision
-    winTextElement.textContent = `Player ${
-      this.game.currentPlayer + 1
+    winTextElement.textContent = `${
+      this.game.getCurrentPlayerName()
     } wins this round!`;
     // Show the win message
     document.getElementById('win-message').style.display = 'block';

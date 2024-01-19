@@ -381,12 +381,19 @@ class GorillasView {
     const startX = gorillaPosition.x + this.gorillaWidth / 2;
     const startY = gorillaPosition.y - this.gorillaHeight / 2;
 
-    // this.drawPlannedTrajectory(startX, startY, angle, velocity);
+    if (this.shouldShowTrajectory) {
+      this.drawPlannedTrajectory(startX, startY, angle, velocity);
+    }
 
     if (this.game.gameState === GAME_STATES.GAME_OVER) {
       fill(0, 0, 0, 127); // Semi-transparent black
       rect(0, 0, width, height);
     }
+  }
+
+  toggleTrajectory() {
+    this.shouldShowTrajectory = !this.shouldShowTrajectory;
+    this.render();
   }
 
   renderScoreboard(currentPlayer, previousTurnPlayer) {
