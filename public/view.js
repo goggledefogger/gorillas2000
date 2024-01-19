@@ -69,8 +69,7 @@ class GorillasView {
   }
 
   createBuildingMask() {
-    // Always start with a fresh mask
-    this.maskGraphics = createGraphics(width, height);
+    this.maskGraphics.clear();
     this.maskGraphics.fill(255); // Use white fill to create the mask
     this.maskGraphics.noStroke();
 
