@@ -21,9 +21,14 @@ window.writeGameState = function(gameState) {
   set(ref(db, 'games/' + gameState.gameId), gameState);
 }
 
+window.deleteFromDB = function(path) {
+  window.gameNodeListenerUnsubscribe();
+  set(ref(db, path), null);
+}
+
 window.createGameStateListener = function(gameId, callback) {
   const gameRef = ref(db, 'games/' + gameId);
-  onValue(gameRef, (snapshot) => {
+  window.gameNodeListenerUnsubscribe = onValue(gameRef, (snapshot) => {
     const data = snapshot.val();
     return callback(data);
   });
