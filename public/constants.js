@@ -26,6 +26,7 @@ const IMAGE_WIDTHS = {
 };
 
 const BUILDING_WIDTH = 50;
+const BUILDING_MIN_HEIGHT = 100;
 const BUILDING_MAX_HEIGHT_DIFFERENCE = 150;
 const BUILDING_MIN_CLEARANCE = 50; // Minimum clearance above the gorilla for a clear throw
 const BUILDING_MAX_HEIGHT = 325;
