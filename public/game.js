@@ -41,85 +41,76 @@ class GorillasGame {
     const buildings = [];
     const numBuildings = width / BUILDING_WIDTH;
 
+    // Initial cityscape generation
     for (let i = 0; i < numBuildings; i++) {
-      let buildingHeight = random(100, BUILDING_MAX_HEIGHT);
-
-      // // Adjust height if the building is adjacent to a gorilla
-      // for (let gorilla of this.gorillas) {
-      //   const gorillaBuildingIndex = floor(gorilla.x / 50);
-      //   if (Math.abs(gorillaBuildingIndex - i) <= 1) {
-      //     buildingHeight = random(100, 250);
-      //   }
-      // }
+      let buildingHeight = random(BUILDING_MIN_HEIGHT, BUILDING_MAX_HEIGHT);
 
       // Limit height difference with the previous building
       if (i > 0) {
         const prevBuildingHeight = buildings[i - 1];
-        if (
-          Math.abs(buildingHeight - prevBuildingHeight) > BUILDING_MAX_HEIGHT_DIFFERENCE
-        ) {
-          // Adjust the building height to be within the allowed range
-          buildingHeight =
-            prevBuildingHeight +
-            random(-BUILDING_MAX_HEIGHT_DIFFERENCE, BUILDING_MAX_HEIGHT_DIFFERENCE);
+        if (Math.abs(buildingHeight - prevBuildingHeight) > BUILDING_MAX_HEIGHT_DIFFERENCE) {
+          buildingHeight = prevBuildingHeight + random(-BUILDING_MAX_HEIGHT_DIFFERENCE, BUILDING_MAX_HEIGHT_DIFFERENCE);
         }
       }
 
       buildings.push(buildingHeight);
     }
 
-    // Ensure the buildings next to the gorillas are not too tall
-    for (let gorilla of this.gorillas) {
-      const gorillaBuildingIndex = floor(gorilla.x / 50);
-      buildings[gorillaBuildingIndex] = Math.min(
-        buildings[gorillaBuildingIndex],
-        height - gorilla.y - BUILDING_MIN_CLEARANCE
-      );
-      if (gorillaBuildingIndex > 0) {
-        buildings[gorillaBuildingIndex - 1] = Math.min(
-          buildings[gorillaBuildingIndex - 1],
-          height - gorilla.y - BUILDING_MIN_CLEARANCE
-        );
-      }
-      if (gorillaBuildingIndex < numBuildings - 1) {
-        buildings[gorillaBuildingIndex + 1] = Math.min(
-          buildings[gorillaBuildingIndex + 1],
-          height - gorilla.y - BUILDING_MIN_CLEARANCE
-        );
-      }
-    }
-
     return buildings;
   }
 
+  adjustBuildingsForGorillas() {
+    for (let gorilla of this.gorillas) {
+      const gorillaBuildingIndex = floor(gorilla.x / BUILDING_WIDTH);
+  
+      // Calculate the maximum height for the building on which the gorilla is standing
+      const maxGorillaBuildingHeight = CANVAS_HEIGHT - gorilla.y - this.view.gorillaHeight;
+  
+      // Adjust the height of the building on which the gorilla is standing
+      // to be equal to or less than maxGorillaBuildingHeight
+      this.cityscape[gorillaBuildingIndex] = Math.min(
+        this.cityscape[gorillaBuildingIndex],
+        maxGorillaBuildingHeight
+      );
+  
+      // Adjust adjacent buildings
+      if (gorillaBuildingIndex > 0) {
+        this.cityscape[gorillaBuildingIndex - 1] = Math.min(
+          this.cityscape[gorillaBuildingIndex - 1],
+          maxGorillaBuildingHeight - BUILDING_MIN_CLEARANCE
+        );
+      }
+      if (gorillaBuildingIndex < this.cityscape.length - 1) {
+        this.cityscape[gorillaBuildingIndex + 1] = Math.min(
+          this.cityscape[gorillaBuildingIndex + 1],
+          maxGorillaBuildingHeight - BUILDING_MIN_CLEARANCE
+        );
+      }
+
+      // reposition the gorilla with the new building height
+      gorilla.y = CANVAS_HEIGHT - this.cityscape[gorillaBuildingIndex];
+    }
+  }  
+
   positionGorillas() {
     // Use a proportion of the canvas width instead of random pixel values
-    const gorilla1X = CANVAS_WIDTH * random(0.0625, 0.4375); // 50 to half of the canvas width - 150
-    const gorilla2X = CANVAS_WIDTH * random(0.5625, 0.9375); // Half of the canvas width + 100 to canvas width - 100
-
+    const gorilla1X = CANVAS_WIDTH * random(0.0625, 0.4375);
+    const gorilla2X = CANVAS_WIDTH * random(0.5625, 0.9375);
+  
     // Calculate the building index based on the gorilla's X position
-    const buildingIndex1 = floor(gorilla1X / 50);
-    const buildingIndex2 = floor(gorilla2X / 50);
-
-    // Assuming the height of each building is stored in this.cityscape array
-    const gorilla1Y =
-      CANVAS_HEIGHT - this.cityscape[buildingIndex1];
-    const gorilla2Y =
-      CANVAS_HEIGHT - this.cityscape[buildingIndex2];
-
-    const gorilla1Position = {
-      x: gorilla1X,
-      y: gorilla1Y,
-    };
-
-    const gorilla2Position = {
-      x: gorilla2X,
-      y: gorilla2Y,
-    };
-
+    const buildingIndex1 = floor(gorilla1X / BUILDING_WIDTH);
+    const buildingIndex2 = floor(gorilla2X / BUILDING_WIDTH);
+  
+    // Adjust the Y position so that the gorilla sits on top of the building
+    // Subtracting the height of the gorilla to align its bottom with the building top
+    const gorilla1Y = (CANVAS_HEIGHT - this.cityscape[buildingIndex1]) - this.view.gorillaHeight;
+    const gorilla2Y = (CANVAS_HEIGHT - this.cityscape[buildingIndex2]) - this.view.gorillaHeight;
+  
+    const gorilla1Position = { x: gorilla1X, y: gorilla1Y };
+    const gorilla2Position = { x: gorilla2X, y: gorilla2Y };
+  
     return [gorilla1Position, gorilla2Position];
-}
-
+  }  
 
   generateWind() {
     return random(-5, 5); // Random wind speed between -5 and 5
@@ -181,6 +172,7 @@ class GorillasGame {
     this.hitPosition = null;
     this.cityscape = this.generateCityscape();
     this.gorillas = this.positionGorillas();
+    this.adjustBuildingsForGorillas(); // New method to adjust building heights
     this.wind = this.generateWind();
     this.currentPlayer = 0;
     this.gameState = GAME_STATES.PLAYING;
