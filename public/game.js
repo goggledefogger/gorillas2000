@@ -39,13 +39,10 @@ class GorillasGame {
 
   generateCityscape() {
     const buildings = [];
-    const numBuildings = width / 50;
-    const MAX_HEIGHT_DIFFERENCE = 150;
-    const MIN_CLEARANCE = 50; // Minimum clearance above the gorilla for a clear throw
-    const MAX_BUILDING_HEIGHT = height - 300; // Adjust as needed
+    const numBuildings = width / BUILDING_WIDTH;
 
     for (let i = 0; i < numBuildings; i++) {
-      let buildingHeight = random(100, MAX_BUILDING_HEIGHT);
+      let buildingHeight = random(100, BUILDING_MAX_HEIGHT);
 
       // // Adjust height if the building is adjacent to a gorilla
       // for (let gorilla of this.gorillas) {
@@ -59,12 +56,12 @@ class GorillasGame {
       if (i > 0) {
         const prevBuildingHeight = buildings[i - 1];
         if (
-          Math.abs(buildingHeight - prevBuildingHeight) > MAX_HEIGHT_DIFFERENCE
+          Math.abs(buildingHeight - prevBuildingHeight) > BUILDING_MAX_HEIGHT_DIFFERENCE
         ) {
           // Adjust the building height to be within the allowed range
           buildingHeight =
             prevBuildingHeight +
-            random(-MAX_HEIGHT_DIFFERENCE, MAX_HEIGHT_DIFFERENCE);
+            random(-BUILDING_MAX_HEIGHT_DIFFERENCE, BUILDING_MAX_HEIGHT_DIFFERENCE);
         }
       }
 
@@ -76,18 +73,18 @@ class GorillasGame {
       const gorillaBuildingIndex = floor(gorilla.x / 50);
       buildings[gorillaBuildingIndex] = Math.min(
         buildings[gorillaBuildingIndex],
-        height - gorilla.y - MIN_CLEARANCE
+        height - gorilla.y - BUILDING_MIN_CLEARANCE
       );
       if (gorillaBuildingIndex > 0) {
         buildings[gorillaBuildingIndex - 1] = Math.min(
           buildings[gorillaBuildingIndex - 1],
-          height - gorilla.y - MIN_CLEARANCE
+          height - gorilla.y - BUILDING_MIN_CLEARANCE
         );
       }
       if (gorillaBuildingIndex < numBuildings - 1) {
         buildings[gorillaBuildingIndex + 1] = Math.min(
           buildings[gorillaBuildingIndex + 1],
-          height - gorilla.y - MIN_CLEARANCE
+          height - gorilla.y - BUILDING_MIN_CLEARANCE
         );
       }
     }
