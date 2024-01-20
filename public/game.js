@@ -168,14 +168,16 @@ class GorillasGame {
 
   endGame(winningPlayer) {
     this.gameState = GAME_STATES.GAME_OVER; // Set game state to game over when the game ends
-    this.totalWins[winningPlayer]++;
     console.log(`Player ${winningPlayer + 1} wins this round!`);
-
     this.winner = winningPlayer
-
     if (this.iamPlayer === winningPlayer) {
-      this.updateGameState(); // Update game state on Firebase
+      this.saveGameEndData(winningPlayer);
     }
+  }
+
+  saveGameEndData(winningPlayer) {
+    this.totalWins[winningPlayer]++;
+    this.updateGameState();
   }
 
   resetGame(bypassUpdatingDb) {
