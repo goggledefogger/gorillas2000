@@ -32,15 +32,12 @@ body {
 /* The Modal (background) */
 .modal {
   position: fixed;
-  /* Stay in place */
-  z-index: 1;
-  /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%;
-  /* Full width */
   height: 100%;
-  /* Full height */
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  align-items: center; /* Align children vertically center */
+  justify-content: center; /* Align children horizontally center */
   overflow: auto;
   /* Enable scroll if needed */
   background-color: rgb(0, 0, 0);
@@ -60,6 +57,10 @@ body {
   /* Could be more or less, depending on screen size */
   max-width: 500px;
   /* Maximum width */
+}
+
+.modal-content > * {
+  margin: 10px 0;
 }
 
 /* The Close Button (x) - Optional */
