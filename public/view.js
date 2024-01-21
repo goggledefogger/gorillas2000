@@ -119,16 +119,30 @@ class GorillasView {
   }
 
   drawGorillas() {
-    for (const gorilla of this.game.gorillas) {
+    const currentPlayerIndex = this.game.currentPlayer;
+    this.game.gorillas.forEach((gorilla, index) => {
+      // Check if the gorilla is the non-current player
+      if (index !== currentPlayerIndex) {
+        // Apply reduced opacity for the non-current player's gorilla
+        push(); // Start a new drawing state
+        tint(255, 127); // Apply 50% opacity (255 is fully opaque, 0 is fully transparent)
+      }
+  
+      // Draw the gorilla
       image(
-        gorillaImageBeforeThrow,
+        this.gorillaImageBeforeThrow,
         gorilla.x - this.gorillaWidth / 2,
         gorilla.y - this.gorillaHeight,
         this.gorillaWidth,
         this.gorillaHeight
       );
-    }
+  
+      if (index !== currentPlayerIndex) {
+        pop(); // Restore original drawing state
+      }
+    });
   }
+  
 
   drawBanana(x, y) {
     image(
