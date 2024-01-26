@@ -152,23 +152,7 @@ class GorillasController {
     this.view.nextGame();
   }
 
-  updateScoreboard() {
-    const player1ScoreElement = document.getElementById('player1-score');
-    const player2ScoreElement = document.getElementById('player2-score');
-
-    if (
-      player1ScoreElement &&
-      player2ScoreElement &&
-      this.game &&
-      this.game.totalWins
-    ) {
-      player1ScoreElement.textContent = this.game.totalWins[0];
-      player2ScoreElement.textContent = this.game.totalWins[1];
-    }
-  }
-
   updateView() {
-    this.updateScoreboard();
     this.view.render();
   }
 
