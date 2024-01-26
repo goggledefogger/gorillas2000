@@ -1,7 +1,7 @@
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
 
-const COLLISION_DISTANCE = 35;
+const COLLISION_DISTANCE = 50;
 
 const TIME_INCREMENT = 0.2; // Adjust this value to change the simulation speed
 const VELOCITY_FACTOR = 0.5;
