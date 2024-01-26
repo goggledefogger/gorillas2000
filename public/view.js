@@ -424,27 +424,28 @@ class GorillasView {
 
   notifyTurn() {
     const notificationElement = document.getElementById('turn-notification');
-    const replayButton = document.getElementById('replay-last-turn');
+    const replayButtons = document.querySelectorAll('.replay-last-turn');
 
     // const currentPlayerName = this.game.getCurrentPlayerName();
     const lastTurnPlayerName = this.game.getLastPlayerName();
 
-    replayButton.textContent = `Replay ${lastTurnPlayerName}'s turn`;
+    // do things to each replayButton
+    for (let i = 0; i < replayButtons.length; i++) {
+      const replayButton = replayButtons[i];
+      replayButton.textContent = `Replay ${lastTurnPlayerName}'s turn`;
+
+      if (!replayButton.onclick) {
+        replayButton.onclick = () => {
+          this.animateReplay(this.game.lastTurn);
+          // Hide notification after replay
+          notificationElement.classList.remove('visible');
+          notificationElement.classList.add('hidden');
+        };
+      }
+    }
 
     notificationElement.classList.remove('hidden');
     notificationElement.classList.add('visible');
-
-    if (!replayButton.onclick) {
-      replayButton.onclick = () => {
-        this.animateReplay(this.game.lastTurn);
-        // Hide notification after replay
-        notificationElement.classList.remove('visible');
-        notificationElement.classList.add('hidden');
-      };
-    }
-
-    // click replay button
-    // replayButton.click();
   }
 
   hideNotifyTurn() {

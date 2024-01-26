@@ -141,7 +141,7 @@ class GorillasGame {
   }
 
   checkCollision(x, y) {
-    const buildingIndex = floor(x / 50);
+    const buildingIndex = floor(x / BUILDING_WIDTH);
 
     if (y > height - this.cityscape[buildingIndex]) {
       console.log('Collision with building:', buildingIndex);
@@ -162,16 +162,12 @@ class GorillasGame {
     return false;
   }
 
-  play() {
-    // ... logic ...
-  }
-
   endGame(winningPlayer) {
     this.gameState = GAME_STATES.GAME_OVER; // Set game state to game over when the game ends
     this.totalWins[winningPlayer]++;
     console.log(`Player ${winningPlayer + 1} wins this round!`);
 
-    this.winner = winningPlayer
+    this.winner = winningPlayer;
 
     if (this.iamPlayer === winningPlayer) {
       this.updateGameState(); // Update game state on Firebase
@@ -301,6 +297,10 @@ class GorillasGame {
   }
 
   getLastPlayerName() {
-    return this.currentPlayer === 0 ? this.player2 : this.player1;
+    if (this.gameState === GAME_STATES.GAME_OVER) {
+      return this.currentPlayer === 0 ? this.player1 : this.player2;
+    } else {
+      return this.currentPlayer === 0 ? this.player2 : this.player1;
+    }
   }
 }
