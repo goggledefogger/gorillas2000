@@ -32,3 +32,5 @@ const BUILDING_MIN_CLEARANCE = 50; // Minimum clearance above the gorilla for a 
 const BUILDING_MAX_HEIGHT = 325;
 
 const COLLISION_DETECTION_DELAY = 5;
+
+const FRAME_RATE = 30;
