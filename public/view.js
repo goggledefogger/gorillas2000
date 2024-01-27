@@ -507,6 +507,7 @@ class GorillasView {
     winTextElement.textContent = `${this.game.getCurrentPlayerName()} wins this round!`;
     // Show the win message
     document.getElementById('win-message').style.display = 'block';
+    this.notifyTurn();
   }
 
   hideGameEnd() {
