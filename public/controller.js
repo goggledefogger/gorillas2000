@@ -47,15 +47,19 @@ class GorillasController {
       this.game.resetGame(true);
     });
 
-    // Event listener for the replay button
-    document.getElementById('replay-button').addEventListener('click', () => {
-      this.replayLastTurn();
-    });
+    // add event listeners for all the replay buttons
+    document.querySelectorAll('.replay-last-turn')
+      .forEach((button) => {
+        button.addEventListener('click', () => {
+          this.replayLastTurn();
+        });
+      });
 
     // add an event listener for anything outside of the #turn-notification div
     document.addEventListener('click', (event) => {
       if (
         !event.target.closest('#turn-notification') &&
+        !event.target.closest('.replay-last-turn') &&
         !event.target.closest('#music-button')
       ) {
         this.view.hideNotifyTurn();
@@ -112,6 +116,9 @@ class GorillasController {
       velocity
     );
 
+    // Save turn data to Firebase
+    this.game.saveTurnData(angle, velocity, startX, startY, collisionResult);
+
     if (collisionResult) {
       if (!collisionResult.hit) {
         // No collision, went offscreen
@@ -134,9 +141,6 @@ class GorillasController {
         }
       }
     }
-
-    // Save turn data to Firebase
-    this.game.saveTurnData(angle, velocity, startX, startY, collisionResult);
 
     this.updateView();
   }

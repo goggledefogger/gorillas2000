@@ -305,13 +305,10 @@ class GorillasView {
   animateReplay(lastTurnData) {
     const { startX, startY, angle, velocity, playerIndex } = lastTurnData;
 
-    // Adjust the angle based on player position
-    let adjustedAngle = this.isPlayerOnLeft(playerIndex) ? angle : 180 - angle;
-
     this.animateTrajectory(
       startX,
       startY,
-      adjustedAngle,
+      angle,
       velocity,
       this.game.wind,
       false,
@@ -467,16 +464,6 @@ class GorillasView {
     for (let i = 0; i < replayButtons.length; i++) {
       const replayButton = replayButtons[i];
       replayButton.textContent = `Replay ${lastTurnPlayerName}'s turn`;
-
-      if (!replayButton.onclick) {
-        replayButton.onclick = () => {
-          // this.hideGameEnd();
-          this.animateReplay(this.game.lastTurn);
-          // Hide notification after replay
-          notificationElement.classList.remove('visible');
-          notificationElement.classList.add('hidden');
-        };
-      }
     }
 
     if (this.game.gameState !== GAME_STATES.GAME_OVER) {
