@@ -4,7 +4,7 @@ demo: [Play Gorillas2000](https://goggledefogger.github.io/gorillas2000/)
 
 ![Game Screenshot](https://github.com/goggledefogger/gorillas2000/assets/1302107/e4d09d07-3844-48ef-bea5-09d97fbac468)
 
-This project is a modern remake of the classic DOS game, Gorillas, originally developed by IBM in 1991. It's a two-player, turn-based game where players take turns throwing bananas in an attempt to hit the opponent's gorilla.
+Modern remake of the classic DOS game Gorillas, originally developed by IBM in 1991. 2-player, turn-based game where players take turns throwing bananas at each other's gorillas.
 
 ## Game Overview
 
@@ -16,15 +16,15 @@ This project is a modern remake of the classic DOS game, Gorillas, originally de
 
 ## Features
 
-- **Turn-Based Gameplay:**
-- **Replay Notifications:**
-- **Generated cityscapes**
-- **Explosions**
-- **Scoreboard**
-- **Choose Names:** Choose your names for a more personal touch.
-- **Pumpin' Theme Music:** Enhance your experience with energetic theme music.
-- **Customizable framerate:**
-- **Joel Sucks at Gorillas:**
+- Turn-based gameplay
+- Replays
+- Generated cityscapes
+- Explosions
+- Scoreboard
+- Choose names
+- Pumpin' theme music
+- Customizable framerate
+- Joel sucks at Gorillas
 
 ## Installation and Running
 
@@ -48,3 +48,7 @@ Contributions are welcome! Feel free to create a pull request to contribute.
 
 - Original Gorillas Game: Developed by IBM in 1991.
 - Gorillas2000 Remake By: Danny Bauman
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
