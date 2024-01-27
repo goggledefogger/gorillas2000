@@ -1,24 +1,35 @@
 # Gorillas2000
 
-demo: https://goggledefogger.github.io/gorillas2000/
+demo: [Play Gorillas2000](https://goggledefogger.github.io/gorillas2000/)
 
-<img width="1538" alt="image" src="https://github.com/goggledefogger/gorillas2000/assets/1302107/2dfec57d-41b0-46e8-ad75-6146d2467247">
+![Game Screenshot](https://github.com/goggledefogger/gorillas2000/assets/1302107/2dfec57d-41b0-46e8-ad75-6146d2467247)
 
-
-This project is a modern remake of the classic DOS game, Gorillas. Originally developed by IBM in 1991, the Gorillas game is a two-player, turn-based game where players take turns throwing bananas in an attempt to hit the opponent's gorilla.
+This project is a modern remake of the classic DOS game, Gorillas, originally developed by IBM in 1991. It's a two-player, turn-based game where players take turns throwing bananas in an attempt to hit the opponent's gorilla.
 
 ## Game Overview
 
-**Goal:** The objective of the game is to hit the opponent's gorilla with a banana.
+**Goal:** Hit the opponent's gorilla with a banana.
 
 **Controls:**
-- Adjust the angle and velocity using the provided sliders.
-- Click the "Throw" button to throw a banana.
+- Adjust the angle and velocity with sliders.
+- Click "Throw" to launch a banana.
+
+## Features
+
+- **Turn-Based Gameplay:**
+- **Replay Notifications:**
+- **Generated cityscapes**
+- **Explosions**
+- **Scoreboard**
+- **Choose Names:** Choose your names for a more personal touch.
+- **Pumpin' Theme Music:** Enhance your experience with energetic theme music.
+- **Customizable framerate:**
+- **Joel Sucks at Gorillas:**
 
 ## Installation and Running
 
-1. **Prerequisites**: Make sure you have Node.js and npm installed.
-2. Clone this repository:
+1. Ensure Node.js and npm are installed.
+2. Clone the repository:
    ```
    git clone goggledefogger/gorillas2000
    ```
@@ -26,16 +37,14 @@ This project is a modern remake of the classic DOS game, Gorillas. Originally de
    ```
    cd gorillas2000
    ```
-
-TODO: write instructions on how to start a web server
-
-Open your browser and go to `http://localhost:3000` (or the port number specified) to play the game.
+4. TODO: write instructions on how to start a web server
+5. Open your browser and go to `http://localhost:3000` (or the port number specified) to play.
 
 ## Development
 
-Feel free to create a pull request if you'd like to contribute your changes back to the main repository.
+Contributions are welcome! Feel free to create a pull request to contribute.
 
 ## Credits
 
 - Original Gorillas Game: Developed by IBM in 1991.
-- Remake by: Danny Bauman
+- Gorillas2000 Remake By: Danny Bauman
