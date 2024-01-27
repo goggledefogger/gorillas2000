@@ -169,6 +169,11 @@ class GorillasView {
     });
   }
 
+  isPlayerOnLeft(playerIndex) {
+    const gorilla = this.game.gorillas[playerIndex];
+    return gorilla.x < CANVAS_WIDTH / 2; // Assuming 'width' is the width of your canvas
+  }
+
   animateTrajectory(
     startX,
     startY,
@@ -299,11 +304,14 @@ class GorillasView {
 
   animateReplay(lastTurnData) {
     const { startX, startY, angle, velocity, playerIndex } = lastTurnData;
-    // Assuming that `animateTrajectory` function correctly handles the trajectory based on player index
+
+    // Adjust the angle based on player position
+    let adjustedAngle = this.isPlayerOnLeft(playerIndex) ? angle : 180 - angle;
+
     this.animateTrajectory(
       startX,
       startY,
-      angle,
+      adjustedAngle,
       velocity,
       this.game.wind,
       false,
@@ -462,6 +470,7 @@ class GorillasView {
 
       if (!replayButton.onclick) {
         replayButton.onclick = () => {
+          // this.hideGameEnd();
           this.animateReplay(this.game.lastTurn);
           // Hide notification after replay
           notificationElement.classList.remove('visible');
@@ -470,8 +479,10 @@ class GorillasView {
       }
     }
 
-    notificationElement.classList.remove('hidden');
-    notificationElement.classList.add('visible');
+    if (this.game.gameState !== GAME_STATES.GAME_OVER) {
+      notificationElement.classList.remove('hidden');
+      notificationElement.classList.add('visible');
+    }
   }
 
   hideNotifyTurn() {
