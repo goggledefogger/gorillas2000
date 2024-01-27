@@ -127,7 +127,7 @@ class GorillasView {
         push(); // Start a new drawing state
         tint(255, 127); // Apply 50% opacity (255 is fully opaque, 0 is fully transparent)
       }
-  
+
       // Draw the gorilla
       image(
         this.gorillaImageBeforeThrow,
@@ -136,13 +136,12 @@ class GorillasView {
         this.gorillaWidth,
         this.gorillaHeight
       );
-  
+
       if (index !== currentPlayerIndex) {
         pop(); // Restore original drawing state
       }
     });
   }
-  
 
   drawBanana(x, y) {
     image(
@@ -300,7 +299,7 @@ class GorillasView {
 
   animateReplay(lastTurnData) {
     const { startX, startY, angle, velocity, playerIndex } = lastTurnData;
-
+    // Assuming that `animateTrajectory` function correctly handles the trajectory based on player index
     this.animateTrajectory(
       startX,
       startY,
