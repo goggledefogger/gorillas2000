@@ -43,6 +43,8 @@ class GorillasView {
     this.bananaHeight =
       (bananaImage.height / bananaImage.width) * this.bananaWidth;
 
+    this.lastFrameTime = Date.now();
+
     this.startAnimationLoop();
   }
 
@@ -212,7 +214,19 @@ class GorillasView {
       let trajectoryIndex = 0;
       let rotationAngle = 0;
 
+      const frameDuration = 1000 / FRAME_RATE;
+
       const animateFrame = () => {
+        const now = Date.now();
+        const timeSinceLastFrame = now - this.lastFrameTime;
+
+        // Limit the frame rate on fast devices
+        if (timeSinceLastFrame < frameDuration) {
+          requestAnimationFrame(animateFrame);
+          return;
+        }
+
+        this.lastFrameTime = now - (timeSinceLastFrame % frameDuration);
         background(220);
         this.drawSky();
         this.drawCityscape();
