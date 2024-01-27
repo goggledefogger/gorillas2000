@@ -1,4 +1,4 @@
-# Gorillas2000
+# Gorillas2000: Happy to Joel
 
 demo: [Play Gorillas2000](https://goggledefogger.github.io/gorillas2000/)
 
