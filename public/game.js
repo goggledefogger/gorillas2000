@@ -48,8 +48,16 @@ class GorillasGame {
       // Limit height difference with the previous building
       if (i > 0) {
         const prevBuildingHeight = buildings[i - 1];
-        if (Math.abs(buildingHeight - prevBuildingHeight) > BUILDING_MAX_HEIGHT_DIFFERENCE) {
-          buildingHeight = prevBuildingHeight + random(-BUILDING_MAX_HEIGHT_DIFFERENCE, BUILDING_MAX_HEIGHT_DIFFERENCE);
+        if (
+          Math.abs(buildingHeight - prevBuildingHeight) >
+          BUILDING_MAX_HEIGHT_DIFFERENCE
+        ) {
+          buildingHeight =
+            prevBuildingHeight +
+            random(
+              -BUILDING_MAX_HEIGHT_DIFFERENCE,
+              BUILDING_MAX_HEIGHT_DIFFERENCE
+            );
         }
       }
 
@@ -64,7 +72,8 @@ class GorillasGame {
       const gorillaBuildingIndex = floor(gorilla.x / BUILDING_WIDTH);
 
       // Calculate the maximum height for the building on which the gorilla is standing
-      const maxGorillaBuildingHeight = CANVAS_HEIGHT - gorilla.y - this.view.gorillaHeight;
+      const maxGorillaBuildingHeight =
+        CANVAS_HEIGHT - gorilla.y - this.view.gorillaHeight;
 
       // Adjust the height of the building on which the gorilla is standing
       // to be equal to or less than maxGorillaBuildingHeight
@@ -103,8 +112,10 @@ class GorillasGame {
 
     // Adjust the Y position so that the gorilla sits on top of the building
     // Subtracting the height of the gorilla to align its bottom with the building top
-    const gorilla1Y = (CANVAS_HEIGHT - this.cityscape[buildingIndex1]) - this.view.gorillaHeight;
-    const gorilla2Y = (CANVAS_HEIGHT - this.cityscape[buildingIndex2]) - this.view.gorillaHeight;
+    const gorilla1Y =
+      CANVAS_HEIGHT - this.cityscape[buildingIndex1] - this.view.gorillaHeight;
+    const gorilla2Y =
+      CANVAS_HEIGHT - this.cityscape[buildingIndex2] - this.view.gorillaHeight;
 
     const gorilla1Position = { x: gorilla1X, y: gorilla1Y };
     const gorilla2Position = { x: gorilla2X, y: gorilla2Y };
@@ -140,7 +151,7 @@ class GorillasGame {
       const gorilla = this.gorillas[i];
       const distance = dist(x, y, gorilla.x, gorilla.y);
 
-      if (distance < COLLISION_DISTANCE) {
+      if (distance < COLLISION_DISTANCE && i !== this.currentPlayer) {
         // Increase this value as needed
         console.log('Collision with gorilla at:', gorilla.x, gorilla.y);
         return { type: 'gorilla', player: i };
@@ -219,17 +230,15 @@ class GorillasGame {
   }
 
   saveTurnData(angle, velocity, startX, startY, hitResult) {
-    let lastTurnPlayer = (this.currentPlayer + 1) % 2;
-
+    let lastTurnPlayer = this.currentPlayer;
     this.lastTurn = {
       angle: angle,
       velocity: velocity,
       startX: startX,
       startY: startY,
-      hitResult: hitResult, // Includes collision details if any
+      hitResult: hitResult,
       playerIndex: lastTurnPlayer,
     };
-
     this.updateGameState();
   }
 
