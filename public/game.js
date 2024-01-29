@@ -149,11 +149,18 @@ class GorillasGame {
 
     for (let i = 0; i < this.gorillas.length; i++) {
       const gorilla = this.gorillas[i];
-      const distance = dist(x, y, gorilla.x, gorilla.y);
+
+      // translate the gorilla x and y to the center of the gorilla
+      // so the collision detection works with the banana
+      const gorillaCenterX = gorilla.x;
+      // const gorillaCenterX = gorilla.x + this.view.gorillaWidth / 2;
+      const gorillaCenterY = gorilla.y - this.view.gorillaHeight / 2;
+
+      const distance = dist(x, y, gorillaCenterX, gorillaCenterY);
 
       if (distance < COLLISION_DISTANCE && i !== this.currentPlayer) {
         // Increase this value as needed
-        console.log('Collision with gorilla at:', gorilla.x, gorilla.y);
+        console.log('Collision with gorilla at:', gorillaCenterX, gorillaCenterY);
         return { type: 'gorilla', player: i };
       }
     }
