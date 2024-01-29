@@ -70,10 +70,10 @@ class GorillasController {
       this.toggleMusic()
     });
 
-    // add an event listener to clicking on the main game image
-    document.getElementById('game-image').addEventListener('click', () => {
-      this.view.toggleTrajectory();
-    });
+    // // add an event listener to clicking on the main game image
+    // document.getElementById('game-image').addEventListener('click', () => {
+    //   this.view.toggleTrajectory();
+    // });
 
   }
 
