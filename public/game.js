@@ -5,7 +5,7 @@ const GAME_STATES = {
 };
 
 class GorillasGame {
-  constructor(player1, player2, numGames) {
+  constructor(player1, player2, numGames, gameId, gameData) {
     this.player1 = player1;
     this.player2 = player2;
     this.numGames = numGames;
@@ -16,8 +16,11 @@ class GorillasGame {
     this.wind = 0; // Wind speed and direction
     this.hitPosition = null;
     this.gameState = GAME_STATES.PLAYING; // Initialize the game state
-    this.gameId = 24;
+    this.gameId = gameId || GAME_ID;
     this.lastKnownState = null;
+    if (gameData) {
+      this.loadFromState(gameData);
+    }
   }
 
   initializeRound() {

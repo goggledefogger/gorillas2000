@@ -34,3 +34,5 @@ const BUILDING_MAX_HEIGHT = 325;
 const COLLISION_DETECTION_DELAY = 5;
 
 const FRAME_RATE = 30;
+
+const GAME_ID = 24;

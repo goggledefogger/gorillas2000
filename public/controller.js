@@ -1,7 +1,5 @@
 let game, view, controller;
 
-GAME_ID = 24;
-
 class GorillasController {
   constructor(game, view) {
     this.game = game;
@@ -191,16 +189,12 @@ class GorillasController {
     const playerChooserModal = document.getElementById('player-chooser-modal');
 
     window.getInitialGameData(this.game.gameId, (data) => {
-      // if there's already data, no need to set the player names
-      if (data) {
-        return;
-      }
-
       const player1Name = 'JoelSpaz';
       const player2Name = 'DannyChamp';
 
       document.getElementById('player1-name-input').value = player1Name;
       document.getElementById('player2-name-input').value = player2Name;
+      document.getElementById('game-id-input').value = this.game.gameId;
 
       playerChooserModal.classList.remove('hidden');
     });
@@ -208,9 +202,13 @@ class GorillasController {
     document.getElementById('start-game-btn').addEventListener('click', () => {
       const player1Name = document.getElementById('player1-name-input').value;
       const player2Name = document.getElementById('player2-name-input').value;
-      this.game.setPlayerNames(player1Name, player2Name);
+      const gameId = document.getElementById('game-id-input').value;
+      window.getInitialGameData(gameId, (data) => {
+        this.game = new GorillasGame(player1Name, player2Name, 3, gameId, data);
+        this.game.view = this.view;
+        this.updateView(); // Reflect the new names
+      });
       playerChooserModal.classList.add('hidden');
-      this.updateView(); // Reflect the new names
     });
   }
 }
@@ -228,7 +226,7 @@ function setup() {
   game.controller = controller
 
   controller.startGame();
-  controller.startFirebaseListener('24');
+  controller.startFirebaseListener(GAME_ID);
 
   controller.showPlayerChooser();
 }
